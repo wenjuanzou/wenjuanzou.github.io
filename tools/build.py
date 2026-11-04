@@ -5,7 +5,7 @@ tools/content.py), then run:  python3 tools/build.py
 Pages are written in place; commit the generated HTML. The Satellica case
 study is a hand-built page and is not generated here.
 """
-import os, html
+import os, html, re
 from content import WORK, INSIGHTS, LAB, CASE_BODIES, ARTICLE_BODIES
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,12 +44,12 @@ def page(path, title, desc, body, current="", home=False):
 <meta property="og:type" content="website">
 {FONTS}
 <link rel="stylesheet" href="/assets/site.css">
-<link rel="icon" href="/assets/img/logo.png">
+<link rel="icon" href="/assets/img/jz-logo.svg" type="image/svg+xml">
 </head>
 <body{' class="home"' if home else ''}>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-head"><div class="wrap">
-<a class="brand" href="/"><img src="/assets/img/logo.png" alt="">Wenjuan Zou <span>(Joerica)</span></a>
+<a class="brand" href="/" aria-label="Wenjuan (Joerica) Zou, home"><img src="/assets/img/jz-logo.svg" alt="" width="40" height="40"></a>
 <nav class="nav" aria-label="Main">{links}<a class="cta" href="{RESUME}">Resume</a></nav>
 </div></header>
 <main id="main">
@@ -62,7 +62,17 @@ def page(path, title, desc, body, current="", home=False):
     full = os.path.join(ROOT, path.strip("/"), "index.html") if path != "/" else os.path.join(ROOT, "index.html")
     os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, "w", encoding="utf-8") as f:
-        f.write(doc)
+        f.write(new_tabs(doc))
+
+
+def new_tabs(doc):
+    # Anything that leaves the site, or opens a file, opens in a new tab.
+    pat = re.compile(r'<a ([^>]*?)href="((?:https?://|/assets/)[^"]*)"([^>]*)>')
+    def fix(m):
+        if 'target=' in m.group(0):
+            return m.group(0)
+        return f'<a {m.group(1)}href="{m.group(2)}" target="_blank" rel="noopener"{m.group(3)}>'
+    return pat.sub(fix, doc)
 
 
 CLOSING = f"""<footer class="closing on-ink"><div class="wrap">

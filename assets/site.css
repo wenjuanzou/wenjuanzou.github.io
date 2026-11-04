@@ -255,3 +255,18 @@ a.lab-card:hover{border-color:var(--iris)}
 
 .cs-body>.wrap>.read{margin:0 auto}
 .article .read{margin:0 auto}
+
+/* Logo */
+.brand img{width:40px;height:40px;border-radius:11px;display:block;transition:transform .25s}
+.brand:hover img{transform:rotate(-6deg)}
+body.home .brand img{box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+
+/* Cards share row tracks so titles and text line up across a row,
+   however many lines the tags take */
+.grid{grid-auto-rows:auto}
+.card{display:grid;grid-template-rows:subgrid;grid-row:span 4;gap:0}
+.card .frame{margin-bottom:18px}
+.card .body{display:contents}
+.card .tags{align-self:start;margin-bottom:12px}
+.card h3{align-self:start;margin:0 0 8px}
+.card p{align-self:start}
