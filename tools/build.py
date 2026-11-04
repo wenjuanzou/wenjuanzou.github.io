@@ -28,7 +28,7 @@ def esc(s):
     return html.escape(s, quote=True)
 
 
-def page(path, title, desc, body, current="", home=False):
+def page(path, title, desc, body, current="", home=False, image="/assets/img/og-home.jpg"):
     nav = [("/work/", "Work", ""), ("/insights/", "Insights", "hide-sm"), ("/lab/", "Lab", "hide-sm"), ("/about/", "About", "")]
     links = "".join(
         f'<a href="{h}" class="{c}"{" aria-current=\"page\"" if current == l else ""}>{l}</a>' for h, l, c in nav)
@@ -42,6 +42,11 @@ def page(path, title, desc, body, current="", home=False):
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://wenjuanzou.github.io{path}">
+<meta property="og:image" content="https://wenjuanzou.github.io{image}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 {FONTS}
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="icon" href="/assets/img/jz-logo.svg" type="image/svg+xml">
@@ -209,7 +214,7 @@ def build_case(w, prev_w, next_w):
 </div>
 <nav class="pager" aria-label="More work">{pager}</nav>
 </div></section></article>"""
-    page(w["href"], f'{w["title"]} | {SITE}', w["summary"], body, "Work")
+    page(w["href"], f'{w["title"]} | {SITE}', w["summary"], body, "Work", image=f'/assets/img/og-{w["slug"]}.jpg')
 
 
 def insight_card(i):
