@@ -29,15 +29,15 @@ WORK = [
          headline="Cutting routine client questions ~80% with self-serve product education",
          goal="To let a small team support clients across a 12-hour time difference.",
          summary="Six task-based help center guides with step-by-step clips, live onboarding, and a human-in-the-loop Claude playbook for recruitment operations at an AI research startup.",
-         thumb="/work/satellica-client-education/media/01ad90c745.jpg"),
+         thumb="/assets/img/t-satellica.jpg"),
     dict(slug="ai-ethics-investigation-lab", href="/work/ai-ethics-investigation-lab/", featured=True,
          title="AI Ethics Investigation Lab", kind="Harvard LDT capstone",
          tags=["Workplace AI", "Scenario simulation"],
          headline="Turning AI policy into workplace judgment",
          goal="To prepare non-technical teams for AI incidents that a list of do's and don'ts can't cover.",
          summary="A one-week Canvas course on AI tools for workplace productivity, ending in a Storyline investigation where learners weigh evidence across emails and team chats and make a defensible call.",
-         thumb=wix("e26989_2ee97eb915eb47cbb341f660ef315e79~mv2.png", 1200),
-         cover=wix("e26989_bcfb47d3451449f5a1fc750773093e09~mv2.jpg", 1800), cover_alt="Investigation overview screen with three evidence channels",
+         thumb="/assets/img/t-ai-ethics.jpg",
+         cover="/assets/img/f-ai-ethics-briefing.jpg", cover_alt="Opening crisis briefing scene of the investigation",
          links=[("Play the investigation", "https://ai-ethics-investigation-lab.pages.dev/story"),
                 ("Canvas course overview (PDF)", WIXFILES + "e26989_5e59318a1a4a4e7cbe6c03da2e37d08d.pdf")],
          meta=[("Role", "End-to-end instructional designer and developer"),
@@ -50,8 +50,8 @@ WORK = [
          headline="Explaining AI and machine learning through one customer's banking app",
          goal="To help entry-level banking staff explain the smart features customers see every day.",
          summary="A story-based Storyline module where learners follow Alex through fraud alerts, personalized offers and a virtual assistant, built in five days for an instructional design test.",
-         thumb=wix("e26989_3f69ec691bc64b1f93199974d4bdf370~mv2.png", 1200),
-         cover=wix("e26989_02c089dc78cc445baf192c47ec5113ad~mv2.png", 1800), cover_alt="Mobile banking app mockups used in the module",
+         thumb="/assets/img/t-ai-ml.jpg",
+         cover="/assets/img/f-ai-ml-mobile.jpg", cover_alt="Mobile banking app mockups used in the module",
          links=[("Play the module", "https://ai-ml-learning-for-everyday-life.pages.dev/story")],
          meta=[("Role", "Designer and developer"), ("Audience", "Entry-level banking and support staff; non-technical learners"),
                ("Timeline", "5 days"), ("Tools", "Storyline 360 · Perplexity · Google Flow · HeyGen · Canva")]),
@@ -74,8 +74,8 @@ WORK = [
          headline="Helping clinicians recognize GI distress in autistic children",
          goal="To catch treatable pain that shows up as behavior instead of words.",
          summary="An intake-room scenario where learners observe a child, weigh caregiver input and decide when to refer, with expert insight and Insight Points feedback.",
-         thumb=wix("e26989_cbadd7a6b9654715ba45fc1ed6db50bb~mv2.png", 1200),
-         cover=wix("e26989_cbadd7a6b9654715ba45fc1ed6db50bb~mv2.png", 1800), cover_alt="When Behavior Speaks title screen",
+         thumb="/assets/img/t-behavior.jpg",
+         cover="/assets/img/f-behavior-screens.jpg", cover_alt="Scenario screens from the intake simulation",
          links=[("Play the module", "https://when-behavior-speaks-recognizing-gi-distress-in-asd-child.pages.dev/story"),
                 ("Design document (PDF)", WIXFILES + "e26989_ce1bbfe7949b4e14989489e089639f03.pdf"),
                 ("Storyboard (PDF)", WIXFILES + "e26989_663ff0de3cfc4f3db0c0ae5af5fe3a30.pdf")],
@@ -87,8 +87,8 @@ WORK = [
          headline="Practicing the hardest conversations before they happen",
          goal="To give new oncology nurses a safe place to rehearse emotionally charged moments.",
          summary="A branching Storyline module built over a weekend: three action-mapped scenarios with mentor feedback, from a tearful patient to \"Am I going to die?\"",
-         thumb=wix("e26989_0ab85a37ab524211a52b089a3a9c3ab8~mv2.png", 1200),
-         cover=wix("e26989_0ab85a37ab524211a52b089a3a9c3ab8~mv2.png", 1800), cover_alt="Empathetic Communication in Oncology Nursing title screen",
+         thumb="/assets/img/t-oncology.jpg",
+         cover="/assets/img/c-oncology.jpg", cover_alt="Empathetic Communication in Oncology Nursing title screen",
          links=[("Play the module", "https://empathetic-communication-in-oncology-nursing.pages.dev/story"),
                 ("Design document", WIXFILES + "e26989_8a1ee99601a44409b4d12eb80dbf041a.docx"),
                 ("Storyboard", WIXFILES + "e26989_0486fb1b32c74fe4851d129c1f58e4d2.docx")],
@@ -100,8 +100,8 @@ WORK = [
          headline="Turning a lecture video into an equipment-readiness simulation",
          goal="To help early-career clinicians find and choose pediatric airway equipment quickly.",
          summary="A Storyline module built on an OPENPediatrics teaching video, with a 360° room exploration, embedded video and knowledge checks.",
-         thumb=wix("e26989_cd38875745a648f1b9b36d1eb2abc0ff~mv2.png", 1200),
-         cover=wix("e26989_192a1413caba42108c87eed7a7887dd6~mv2.jpg", 1800), cover_alt="Knowledge check and certificate screens",
+         thumb="/assets/img/t-airway.jpg",
+         cover="/assets/img/f-airway-cover.jpg", cover_alt="Clear the Airway title screen",
          links=[("Play the module", "https://clear-the-airway-an-interactive-pediatric-simulation.pages.dev/story")],
          meta=[("Role", "Designer and developer"), ("Audience", "Pediatric nurses, respiratory therapists, residents"),
                ("Format", "Interactive microlearning"), ("Tools", "Storyline 360 · CapCut · Canva · ChatGPT")]),
@@ -111,7 +111,7 @@ WORK = [
          headline="A museum learning guide built backward from what students should create",
          goal="To help grades 6–12 connect a WWI exhibit to memory, identity and peace.",
          summary="A team-designed learning guide for the National WWI Museum's Armistice centennial exhibit: a sound-based hook, a virtual scavenger hunt and a memorial design task.",
-         thumb=wix("e26989_5a79738d5e734e51b75566abefea3200~mv2.png", 1200),
+         thumb="/assets/img/t-wwi.jpg",
          cover=wix("e26989_ce5d9d101a3c43028c1834b8208aa531~mv2.png", 1800), cover_alt="Pages from the learning guide",
          links=[("Read the guide (PDF)", WIXFILES + "e26989_e0aa964da9de4e7bb56715c2b6d2edb7.pdf")],
          meta=[("Role", "Instructional design lead on a team project"), ("Audience", "Grades 6–12 and their teachers"),
@@ -124,6 +124,7 @@ def fig(src, cap, alt=""):
 
 
 def sec(num, title, inner):
+    num = num.replace(" · ", ". ")
     return f'<section class="cs-sec"><p class="num">{num}</p><h2>{title}</h2>{inner}</section>'
 
 
@@ -154,7 +155,7 @@ CASE_BODIES["ask-first-log-it-right"] = (
 <dt>Decision</dt><dd>2-week pilot → IT security review → VP of Product.</dd>
 <dt>Next step</dt><dd>Demo with Dana + VP, Tue 10:00 (task created).</dd></dl></div>
 </div>
-<p class="mono muted">The course opens with this comparison: same buyer, same 20 minutes, two very different records.</p>"""
+<p class="exhibit-note">The course opens with this comparison: same buyer, same 20 minutes, two very different records.</p>"""
     + sec("02 · What people needed to do differently", "Seven behaviors, six on the call and one after it",
           "<p>I action-mapped the goal down to observable behaviors, using the SPICED discovery framework from Winning by Design, which is common in B2B software sales.</p>"
           "<ul><li>Start with the situation: find out why the buyer took the call today.</li><li>Quantify the pain: turn \"it's slow\" into time, volume or headcount.</li>"
@@ -196,7 +197,7 @@ CASE_BODIES["ai-ethics-investigation-lab"] = (
     sec("01 · The problem", "Ethics training stops at the policy list",
         "<p>Most AI ethics training is a list of do's and don'ts. Real workplace issues don't arrive that way. Evidence is scattered across tools and conversations, ownership is unclear (who can pause a system?), and teams disagree about what the real risk is.</p>"
         "<p>The hard part isn't defining bias. It's deciding what to do next when the impact is real and the information is incomplete.</p>")
-    + fig(wix("e26989_85163b19ddf94c7a82bf445e50b7afcf~mv2.png", 1800), "The Canvas course: Modules 1–2 build responsible-use habits and AI workflows, Module 3 is the investigation, Module 4 is transfer.")
+    + fig("/assets/img/f-ai-ethics-canvas.jpg", "The Canvas course: Modules 1–2 build responsible-use habits and AI workflows, Module 3 is the investigation, Module 4 is transfer.")
     + sec("02 · Course design", "From AI user to AI decision-maker in one week",
           "<p>I designed the full one-week, self-paced Canvas course, not just the simulation.</p>"
           "<ul><li><b>Modules 1–2:</b> responsible-use foundations and repeatable AI workflows: prompting, iteration and quality checks.</li>"
@@ -216,7 +217,7 @@ CASE_BODIES["ai-ethics-investigation-lab"] = (
          "The lab closes with a simple Pause-and-Check framework for evaluating AI use in any workplace tool.",
          "Why: the scenario is one case; the framework is what transfers."),
     ]))
-    + fig(wix("e26989_bcfb47d3451449f5a1fc750773093e09~mv2.jpg", 1800), "Investigation overview: three evidence channels, unlocked step by step.")
+    + '<div class="figs">' + fig("/assets/img/f-ai-ethics-overview.jpg", "Investigation overview: three evidence channels, unlocked in order.") + fig("/assets/img/f-ai-ethics-evidence.jpg", "After the inbox: clues gathered so far and what they suggest.") + "</div>"
     + sec("04 · My role and tools", "End to end, with AI as an assistant",
           "<p>I designed the scenario, evidence trail and assessment logic, wrote all learner-facing copy and feedback, built the Storyline interactions with states, variables and triggers, and integrated the lab into the Canvas course.</p>"
           "<p>ChatGPT and Claude helped me brainstorm scenarios and tighten feedback copy; ElevenLabs produced voiceover and sound; an image model produced some visuals. I made the final decisions on learning flow, tone and feedback logic.</p>")
@@ -241,7 +242,7 @@ CASE_BODIES["ai-ml-everyday-life"] = (
          "Perplexity for research and definitions, HeyGen for an avatar-led introduction. I checked content accuracy and wrote the knowledge checks myself.",
          ""),
     ]))
-    + fig(wix("e26989_02c089dc78cc445baf192c47ec5113ad~mv2.png", 1800), "Mobile banking app mockups built for the scenario.")
+    + fig("/assets/img/f-ai-ml-mobile.jpg", "Mobile banking app mockups built for the scenario.")
     + sec("04 · Reflection", "Clarity under a deadline",
           "<p>Five days forced choices: one narrative, three features, short checks. It sharpened how I distill a technical topic and use AI tools across the whole process, from research to UI visuals.</p>")
 )
@@ -254,7 +255,7 @@ CASE_BODIES["brain-hacks"] = (
           "<ul><li>They preferred short, interactive, media-rich content.</li><li>They had little neuroscience knowledge but high curiosity.</li>"
           "<li>They wanted practical application over theory.</li></ul>"
           f'<div class="links"><a class="btn" href="{WIXFILES}e26989_0294619afce14abc8ba91fec57c24194.pdf">Personas (PDF) &#8599;</a><a class="btn" href="{WIXFILES}e26989_9741e6f2820e44309aebf7e08aea9f47.pdf">Focus group report &#8599;</a></div>')
-    + '<div class="figs">' + fig(wix("e26989_b6bd377be62f411195bfc1317d4da247~mv2.png", 1000), "Persona: Marcus") + fig(wix("e26989_a11041a7afd64f6296b0b8d30546ed68~mv2.png", 1000), "Persona: Elena") + "</div>"
+    + '<div class="figs">' + fig("/assets/img/f-brain-persona-1.jpg", "Persona: Marcus") + fig("/assets/img/f-brain-persona-2.jpg", "Persona: Elena") + "</div>"
     + sec("03 · Design", "A three-part journey", decisions([
         ("Learn the brain", "What dopamine is, how reward shapes motivation, and why it matters, told through an animated \"Brain\" narrator.", ""),
         ("Boost it wisely", "A drag-and-drop game and avatar scenarios where learners apply strategies to relatable goals.", "Why: the focus group asked for practice over theory."),
@@ -264,7 +265,7 @@ CASE_BODIES["brain-hacks"] = (
           "<p>Four usability testers went through the Storyline prototype. They responded well to the color scheme, avatars and voiceover. The character stories felt less relatable than I intended, so I rewrote them. In follow-up, testers could recall strategies such as incremental goal-setting.</p>"
           "<p>All four testers reported learning something new about motivation. With four people, that is a formative signal, not proof of impact.</p>"
           f'<div class="links"><a class="btn" href="{WIXFILES}e26989_f087a6f9df96420c826fa6c82a9827a6.pdf">Usability test report &#8599;</a><a class="btn" href="{WIXFILES}e26989_698d593583d444fd9214256ef8529967.pdf">Project summary &#8599;</a></div>')
-    + fig(wix("e26989_c54b37a71d2e4d978cfd39bd9afe479f~mv2.png", 1600), "Inside the course.")
+    + fig("/assets/img/f-brain-flow.jpg", "Course flow: introduce the science, practice in three scenarios, then build a personal plan.")
     + sec("05 · What I'd do next", "Tools learners can take with them",
           "<p>Add downloadable action-plan templates, audio descriptions, and localized versions.</p>")
 )
@@ -286,10 +287,10 @@ CASE_BODIES["when-behavior-speaks"] = (
          "Learners earn Insight Points for well-reasoned decisions and end with a reflection and a downloadable reference guide.",
          ""),
     ]))
-    + fig(wix("e26989_328ffd98a0654c6b8b6ca070c855b670~mv2.png", 1600), "Expert insight inside the scenario.")
+    + fig("/assets/img/f-behavior-expert.jpg", "Expert insight inside the scenario.")
     + sec("04 · Process", "Research, design document, storyboard, build",
           "<p>I synthesized research from GI and autism experts, wrote a design document and storyboard, then built the 11-slide module in Storyline with graphics, audio, video and animation. The design used action mapping, Knowles' adult learning principles and Bloom's taxonomy (understand → apply → evaluate).</p>"
-          + fig(wix("e26989_fd25b783eb95486a95fa71d46df941eb~mv2.png", 1600), "Scenario screens."))
+          + fig("/assets/img/c-behavior.jpg", "Title screen."))
 )
 
 CASE_BODIES["empathetic-communication-oncology"] = (
@@ -325,7 +326,7 @@ CASE_BODIES["clear-the-airway"] = (
         ("Short checks right after each clip", "Knowledge checks sit next to the video segment they test, so feedback arrives while the content is fresh.", ""),
         ("A completion certificate", "A micro-certificate closes the module so learners have a record of what they practiced.", ""),
     ]))
-    + fig(wix("e26989_192a1413caba42108c87eed7a7887dd6~mv2.jpg", 1600), "Knowledge checks and completion certificate.")
+    + '<div class="figs">' + fig("/assets/img/f-airway-practice.jpg", "Video segment: equipment preparation.") + fig("/assets/img/f-airway-checks.jpg", "Knowledge checks and completion certificate.") + "</div>"
     + sec("04 · What I'd do next", "Cover the whole procedure",
           "<p>Expand into a full branching simulation covering the procedure and post-intubation care.</p>")
 )
@@ -347,22 +348,22 @@ CASE_BODIES["wwi-armistice-learning-guide"] = (
 INSIGHTS = [
     dict(slug="metacognition", topic="Metacognition", date="February 2025", title="How do we describe metacognition?",
          dek="Helping learners think about how they think: person, task and strategy.",
-         img="/assets/img/ins-metacognition.jpg"),
+         img="/assets/img/ins-metacognition.jpg", thumb="/assets/img/t-ins-metacognition.jpg"),
     dict(slug="learner-attention", topic="Attention", date="March 2025", title="How do we gain and keep learners' attention?",
          dek="Five research-informed ways to earn attention, then hold it.",
-         img="/assets/img/ins-attention.jpg"),
+         img="/assets/img/ins-attention.jpg", thumb="/assets/img/t-ins-attention.jpg"),
     dict(slug="assessment", topic="Assessment", date="April 2025", title="When should assessment happen in the learning process?",
          dek="Assessment for learning and of learning, built in from the start.",
-         img="/assets/img/ins-assessment.jpg"),
+         img="/assets/img/ins-assessment.jpg", thumb="/assets/img/t-ins-assessment.jpg"),
     dict(slug="learning-framework", topic="Course structure", date="March 2025", title="How do we create an effective framework for learners?",
          dek="Six components I rely on when structuring a learning journey.",
-         img="/assets/img/ins-framework.jpg"),
+         img="/assets/img/ins-framework.jpg", thumb="/assets/img/t-ins-framework.jpg"),
     dict(slug="design-theories", topic="Learning theory", date="April 2025", title="What theories underlie effective design?",
          dek="Seven theories I use as a compass, and what each changes in a design.",
-         img="/assets/img/ins-theories.jpg"),
+         img="/assets/img/ins-theories.jpg", thumb="/assets/img/t-ins-theories.jpg"),
     dict(slug="learning-variety", topic="Variety", date="May 2025", title="How can strategies create variety in the learning process?",
          dek="Variety as equity: reaching more learners without overloading any of them.",
-         img="/assets/img/ins-variety.jpg"),
+         img="/assets/img/ins-variety.jpg", thumb="/assets/img/t-ins-variety.jpg"),
 ]
 
 
