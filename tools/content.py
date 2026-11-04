@@ -347,22 +347,22 @@ CASE_BODIES["wwi-armistice-learning-guide"] = (
 INSIGHTS = [
     dict(slug="metacognition", topic="Metacognition", date="February 2025", title="How do we describe metacognition?",
          dek="Helping learners think about how they think: person, task and strategy.",
-         img=wix("e26989_d4c87c16f0824ddfa5b1bae99182337d~mv2.png", 1400)),
+         img="/assets/img/ins-metacognition.jpg"),
     dict(slug="learner-attention", topic="Attention", date="March 2025", title="How do we gain and keep learners' attention?",
          dek="Five research-informed ways to earn attention, then hold it.",
-         img=wix("e26989_d8f84d041d2e476bb1b44b0e489b8fe6~mv2.png", 1400)),
+         img="/assets/img/ins-attention.jpg"),
     dict(slug="assessment", topic="Assessment", date="April 2025", title="When should assessment happen in the learning process?",
          dek="Assessment for learning and of learning, built in from the start.",
-         img=wix("e26989_b8cadf97167249e4885eedc8c82683d7~mv2.png", 1400)),
+         img="/assets/img/ins-assessment.jpg"),
     dict(slug="learning-framework", topic="Course structure", date="March 2025", title="How do we create an effective framework for learners?",
          dek="Six components I rely on when structuring a learning journey.",
-         img=wix("e26989_c0c9ea4884e04b05b187f69520903e25~mv2.png", 1400)),
+         img="/assets/img/ins-framework.jpg"),
     dict(slug="design-theories", topic="Learning theory", date="April 2025", title="What theories underlie effective design?",
          dek="Seven theories I use as a compass, and what each changes in a design.",
-         img=wix("e26989_cb5741c933b84b0d94cddf083c4ffcbb~mv2.jpg", 1400)),
+         img="/assets/img/ins-theories.jpg"),
     dict(slug="learning-variety", topic="Variety", date="May 2025", title="How can strategies create variety in the learning process?",
          dek="Variety as equity: reaching more learners without overloading any of them.",
-         img=wix("e26989_a812a05cef1f475ba2a2915ad064a8da~mv2.png", 1400)),
+         img="/assets/img/ins-variety.jpg"),
 ]
 
 

@@ -13,7 +13,7 @@ SITE = "Wenjuan (Joerica) Zou"
 EMAIL = "joericazou@gmail.com"
 LINKEDIN = "https://www.linkedin.com/in/wenjuanzou/"
 RESUME = "/assets/Wenjuan_Zou_Resume.pdf"
-PHOTO = wix("e26989_92697db2f3af4b52b2af558dfd1d0786f000.jpg", 800)
+PHOTO = "/assets/img/headshot.webp"
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
@@ -41,6 +41,7 @@ def page(path, title, desc, body, current=""):
 <meta property="og:type" content="website">
 {FONTS}
 <link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" href="/assets/img/logo.png">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -100,7 +101,7 @@ def build_home():
 <p class="lede">I start from the business problem, design for the moment someone gets stuck, and build the course, the job aid or the AI workflow that fixes it.</p>
 <div class="btns"><a class="btn primary" href="#work">See case studies</a><a class="btn" href="/about/">About me</a></div>
 </div>
-<div class="portrait"><img src="{PHOTO}" alt="Portrait of Wenjuan (Joerica) Zou"></div>
+<div class="portrait headshot"><img src="{PHOTO}" alt="Portrait of Wenjuan (Joerica) Zou"></div>
 </div>
 <div class="wrap"><div class="proof">
 <div><b>~80%</b><span>fewer routine how-to questions after self-serve product guides (Satellica)</span></div>
@@ -140,7 +141,7 @@ def build_home():
 </div></section>
 
 <section class="section"><div class="wrap about-strip">
-<img loading="lazy" src="{wix('e26989_30ec7ce97d0a41139658b9efcaba17b3~mv2.jpg', 1000)}" alt="Joerica on campus">
+<img loading="lazy" src="/assets/img/harvard-group.jpg" alt="Joerica with classmates at Harvard">
 <div><p class="eyebrow">About</p><h2 style="font-size:var(--s3)">A designer who learned how courses break</h2>
 <p style="margin-top:16px">I trained in interaction design, built clinical and university eLearning, then spent years at TransPerfect making enterprise courses work across languages and systems. After a graduate certificate in Learning Design and Technology at Harvard Extension, I joined an AI research startup to run client education and research operations.</p>
 <p class="muted">That mix is why I design the way I do: I think about the interface, the learner and the system the course has to live in.</p>
@@ -229,7 +230,7 @@ def build_lab():
 
 def build_about():
     body = f"""<section class="cs-hero"><div class="wrap about-strip">
-<div class="portrait" style="aspect-ratio:4/5"><img src="{wix('e26989_46ab8559f8214d13a577a26478966c2a~mv2.jpg', 1000)}" alt="Joerica at Harvard" style="object-position:50% 60%"></div>
+<div class="portrait" style="aspect-ratio:4/5"><img src="/assets/img/campus.jpg" alt="Joerica on the Harvard campus" style="object-position:55% 50%"></div>
 <div>
 <p class="eyebrow">About</p>
 <h1 style="font-size:var(--s3);max-width:20ch">I'm Wenjuan, and most people call me Joerica.</h1>

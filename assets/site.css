@@ -208,3 +208,5 @@ p{margin:0 0 1em}
 .skills h3{font-size:1rem;margin-bottom:8px}
 .skills p{color:var(--muted);font-size:.95rem}
 @media (max-width:760px){.skills{grid-template-columns:minmax(0,1fr)}}
+.portrait.headshot{background:transparent;box-shadow:none;aspect-ratio:1/1;border-radius:0}
+.portrait.headshot img{object-fit:contain}
