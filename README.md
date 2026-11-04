@@ -1,7 +1,7 @@
 # Portfolio
 
 Portfolio site of Wenjuan (Joerica) Zou, Learning Experience Designer.
-Deployed by Cloudflare on every push to `main`.
+Published at https://wenjuanzou.github.io by GitHub Pages on every push to `main`.
 
 ## Structure
 - `index.html`, `work/`, `insights/`, `lab/`, `about/`: generated pages
