@@ -266,7 +266,7 @@ def build_about():
 <p class="kicker">About</p>
 <h1 style="font-size:clamp(2.2rem,4.4vw,3.4rem)">I'm Wenjuan, and most people call me Joerica.</h1>
 <p style="margin-top:24px">I design learning for the moment someone gets stuck: a new rep on a discovery call, a client setting up their first study at 10 p.m. in another time zone, a nurse in a hard conversation with a patient. I start from what that person needs to do differently, then build the practice, the job aid or the workflow that gets them there.</p>
-<p>I came to learning design through interaction design. My M.S. at Northeastern taught me to think about the interface first, and that habit stuck. I built clinical eLearning for 350+ nurses at Commonwealth Care Alliance, rebuilt a university Title IX course that raised completion by 20%, and spent years at TransPerfect localizing and testing enterprise courses across Western European and East Asian languages. That is where I learned how courses actually break.</p>
+<p>I came to learning design through interaction design. After a B.S. in Leadership at Northeastern, I stayed for an M.S. in Digital Media, which taught me to think about the interface first, and that habit stuck. I built clinical eLearning for 350+ nurses at Commonwealth Care Alliance, rebuilt a university Title IX course that raised completion by 20%, and spent years at TransPerfect localizing and testing enterprise courses across Western European and East Asian languages. That is where I learned how courses actually break.</p>
 <p>In 2023 I went back to the science with Harvard Extension's Learning Design and Technology program. Then I joined Satellica, an AI-powered UX research platform, to run client education and research operations: self-serve product guides that cut routine how-to questions by about 80%, and human-in-the-loop Claude workflows that saved about 40% of my weekly coordination time.</p>
 <div class="btns" style="margin-top:28px"><a class="btn primary" href="{RESUME}">Download resume</a><a class="btn" href="{LINKEDIN}">LinkedIn</a></div>
 </div></div></section>
@@ -275,8 +275,7 @@ def build_about():
 <div class="section-head"><div><p class="kicker">Experience</p><h2>Where the work happened</h2></div></div>
 <ul class="timeline">
 {tl("Jan 2026 &ndash; Present", "Satellica", "Operations Manager &mdash; Client Education &amp; Research Operations", "Task-based help center guides, step-by-step videos and client onboarding cut routine how-to questions by about 80%. Four human-in-the-loop Claude workflows saved about 40% of weekly coordination time. Bilingual product updates for clients and investors; recruitment for six qualitative studies.")}
-{tl("Sep 2019 &ndash; Dec 2025", "TransPerfect", "E-Learning Localization Engineer, freelance", "Project-based eLearning localization in Storyline, Captivate and Adobe Creative Suite, with functional QA and LMS compatibility testing.")}
-{tl("May 2016 &ndash; Aug 2019", "TransPerfect", "E-Learning Localization Engineer", "Localized and quality-tested courses for global enterprise clients in Western European and East Asian languages, catching layout, interaction and font-encoding issues before delivery.")}
+{tl("May 2016 &ndash; Dec 2025", "TransPerfect", "E-Learning Localization Engineer", "Localized and quality-tested eLearning courses for global enterprise clients in Western European and East Asian languages using Storyline, Captivate and Adobe Creative Suite, catching layout, interaction and font-encoding issues and running functional QA and LMS compatibility testing before delivery.")}
 {tl("Oct 2015 &ndash; May 2016", "Commonwealth Care Alliance", "E-Learning Specialist", "Interactive clinical and compliance modules in Storyline for 350+ nurses and nurse practitioners, reducing learner seat time by 30% compared with the previous modules, based on LMS time tracking. SCORM on HealthStream, refined through learner surveys and focus groups.")}
 {tl("Jul 2015 &ndash; Oct 2015", "Northeastern University", "E-Learning Designer", "Rebuilt a slide-based Title IX course as interactive eLearning with the Office of Diversity, raising completion by 20%; student and faculty focus groups shaped navigation and content.")}
 </ul>
@@ -288,6 +287,7 @@ def build_about():
 <div><b>Harvard Extension School</b><span>Graduate Certificate, Learning Design and Technology, 2023&ndash;2026, GPA 4.0</span></div>
 <div><b>Association for Talent Development</b><span>E-Learning Instructional Design Certificate, 2023</span></div>
 <div><b>Northeastern University</b><span>M.S. Digital Media, Interactive Design, 2013&ndash;2015</span></div>
+<div><b>Northeastern University</b><span>B.S. Leadership, 2012&ndash;2013</span></div>
 </div>
 <div class="skills">
 <div><h3>Learning design</h3><p>Needs analysis, action mapping, ADDIE and SAM, backward design, storyboarding, scenario-based learning, assessment design, microlearning, performance support, evaluation planning.</p></div>
