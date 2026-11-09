@@ -461,6 +461,9 @@ ARTICLE_BODIES = {
 }
 
 LAB = [
+    dict(title="SME Kickoff Intake", status="live", href="/lab/sme-kickoff-intake/",
+         problem="Kickoff meetings with busy subject matter experts get spent on fact-finding, and experts leave out most of the decisions they make when they summarize their work.",
+         what="An AI interviewer that talks with the SME before kickoff, guided by action mapping, Gilbert's Behavior Engineering Model and cognitive task analysis, then drafts a kickoff brief the SME checks first. Working prototype; SME pilots next."),
     dict(title="Recruitment-ops playbook for Claude", status="live", href="/work/satellica-client-education/#workflow",
          problem="Recruiting hundreds of study participants meant days of copying data and messaging people one by one.",
          what="Four reusable prompt procedures that Claude runs in the browser, with my approval before every action. Saved about 40% of weekly coordination time."),

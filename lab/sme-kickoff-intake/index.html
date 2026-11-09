@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SME Kickoff Intake | Wenjuan (Joerica) Zou</title>
+<meta name="description" content="An AI interviewer that talks with a subject matter expert before a training kickoff and drafts a brief the SME checks first. Built on action mapping, Gilbert's Behavior Engineering Model, cognitive task analysis and LTEM.">
+<meta property="og:title" content="SME Kickoff Intake">
+<meta property="og:description" content="A pre-kickoff AI interview for learning projects, grounded in learning science.">
+<meta property="og:url" content="https://wenjuanzou.github.io/lab/sme-kickoff-intake/">
+<meta property="og:image" content="https://wenjuanzou.github.io/assets/img/og-home.jpg">
+<link rel="icon" href="/assets/img/jz-logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: one quiet column, one question at a time, like a good interviewer across the table. */
+:root{
+  --bg:#edf0ec;
+  --surface:#fafbf9;
+  --ink:#1c2320;
+  --muted:#5e6964;
+  --line:#d3d9d4;
+  --accent:#2a5a4e;
+  --accent-ink:#f5faf7;
+  --accent-soft:#dbe7e1;
+  --flag:#86570f;
+  --flag-soft:#f2e8d4;
+  --display:"Newsreader","Noto Serif SC",Georgia,"Times New Roman",serif;
+  --body:"Hanken Grotesk","Noto Sans SC",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111614; --surface:#18201c; --ink:#e2e8e4; --muted:#98a49e; --line:#2a3430;
+    --accent:#8fc6b4; --accent-ink:#0e1d18; --accent-soft:#1d332c; --flag:#e2b466; --flag-soft:#372c16;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111614; --surface:#18201c; --ink:#e2e8e4; --muted:#98a49e; --line:#2a3430;
+  --accent:#8fc6b4; --accent-ink:#0e1d18; --accent-soft:#1d332c; --flag:#e2b466; --flag-soft:#372c16;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;display:flex;flex-direction:column;min-height:100vh}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:500}
+p{margin:0}
+
+.bar{display:flex;align-items:center;gap:12px;padding:16px clamp(16px,4vw,40px);flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;line-height:1.2}
+.brand b{font-family:var(--display);font-weight:500;font-size:19px}
+.brand span{font-size:13px;color:var(--muted)}
+.bar .spacer{flex:1}
+
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 18px;cursor:pointer;font-size:15px;font-weight:500;transition:border-color .15s,background .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.quiet{background:transparent;border-color:transparent;color:var(--muted);padding:9px 12px}
+.btn.quiet:hover{color:var(--ink);border-color:var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.small{padding:6px 12px;font-size:14px}
+
+.stage{flex:1;width:100%;max-width:760px;margin:0 auto;padding:clamp(12px,4vh,48px) clamp(16px,4vw,32px) 40px;display:flex;flex-direction:column;gap:28px}
+
+.eyebrow{font-size:13px;color:var(--muted);letter-spacing:.02em}
+.hero{font-family:var(--display);font-size:clamp(32px,5vw,46px);line-height:1.12;font-weight:400}
+.lede{font-size:18px;color:var(--muted);max-width:56ch}
+.promises{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.promise{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.promise b{display:block;font-weight:600;font-size:15px;margin-bottom:2px}
+.promise span{font-size:14px;color:var(--muted)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:14px;font-weight:500}
+.field input{width:100%;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:11px 13px}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hint{font-size:14px;color:var(--muted)}
+.care{font-size:14px;color:var(--muted);border-left:2px solid var(--accent);padding-left:12px}
+
+/* talk */
+.progress{display:flex;flex-direction:column;gap:8px}
+.segs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.seg{height:4px;border-radius:4px;background:var(--line)}
+.seg.done{background:var(--accent)}
+.seg.now{background:linear-gradient(90deg,var(--accent) 45%,var(--line) 45%)}
+.progress .label{font-size:14px;color:var(--muted)}
+.progress .label b{color:var(--ink);font-weight:600}
+details.thread{border-top:1px solid var(--line);padding-top:12px}
+details.thread summary{cursor:pointer;color:var(--muted);font-size:14px;list-style:none}
+details.thread summary::-webkit-details-marker{display:none}
+details.thread summary::before{content:"+ ";}
+details.thread[open] summary::before{content:"− ";}
+.log{display:flex;flex-direction:column;gap:14px;margin-top:14px;max-height:46vh;overflow:auto;padding-right:4px}
+.turn{font-size:15px;line-height:1.5}
+.turn .who{display:block;font-size:12px;color:var(--muted);margin-bottom:2px;letter-spacing:.03em}
+.turn.ai{font-family:var(--display);font-size:17px}
+.turn.me{padding-left:14px;border-left:2px solid var(--accent-soft)}
+.turn.note{font-size:13px;color:var(--muted);font-style:italic}
+.question{font-family:var(--display);font-size:clamp(23px,3.2vw,30px);line-height:1.32;font-weight:400;max-width:34em;min-height:3em;white-space:normal}
+.question .thinking{color:var(--muted);font-style:italic;font-size:20px}
+.answer{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 0 rgba(0,0,0,.02),0 10px 30px -18px rgba(20,40,30,.25)}
+.answer textarea{width:100%;border:none;background:transparent;resize:none;min-height:96px;max-height:300px;font-size:17px;line-height:1.5;padding:4px 6px}
+.answer textarea:focus{outline:none}
+.answer .tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px}
+.answer .tools .spacer{flex:1}
+.dictate{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);padding:0 6px}
+.dictate svg{flex:none}
+.finish{background:var(--accent-soft);border-radius:18px;padding:18px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.finish p{flex:1;min-width:220px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 24px;display:flex;flex-direction:column;gap:14px}
+.summary-list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:17px}
+.card textarea{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:12px;min-height:90px;resize:vertical}
+.working{display:flex;align-items:center;gap:10px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 1.2s infinite ease-in-out}
+@keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+@media (prefers-reduced-motion: reduce){.dot{animation:none}.btn{transition:none}}
+.error{color:var(--flag)}
+
+.foot{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:14px clamp(16px,4vw,40px) 22px;font-size:13px;color:var(--muted)}
+.foot .spacer{flex:1}
+.link{background:none;border:none;padding:0;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:13px}
+.link:hover{color:var(--ink)}
+
+/* overlays */
+.overlay{position:fixed;inset:0;background:rgba(12,18,15,.42);display:none;justify-content:center;align-items:flex-start;padding:5vh 14px;z-index:20;overflow:auto}
+.overlay.open{display:flex}
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:20px;width:min(980px,100%);padding:26px clamp(18px,3vw,34px);display:flex;flex-direction:column;gap:20px}
+.sheet-head{display:flex;align-items:center;gap:12px}
+.sheet-head h2{font-family:var(--display);font-size:30px;font-weight:400;flex:1}
+.method{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.mstep{border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:4px;background:var(--bg)}
+.mstep .n{font-size:12px;color:var(--muted)}
+.mstep b{font-weight:600;font-size:14.5px;line-height:1.3}
+.mstep .fw{font-size:13px;color:var(--accent);font-weight:500}
+.mstep span{font-size:13px;color:var(--muted)}
+.principles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.principles div{font-size:14px;color:var(--muted)}
+.principles b{display:block;color:var(--ink);font-weight:600;margin-bottom:2px}
+.dv{display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px}
+.dv-list{display:flex;flex-direction:column;gap:8px}
+.dv-item{text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;cursor:pointer}
+.dv-item.sel{border-color:var(--accent);background:var(--accent-soft)}
+.dv-item b{display:block;font-weight:600;font-size:14px}
+.dv-item span{font-size:12.5px;color:var(--muted)}
+
+/* brief */
+.brief{display:flex;flex-direction:column;gap:16px}
+.chip{display:inline-block;font-size:12px;padding:2px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap;font-weight:500}
+.chip.ok{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.chip.warn{border-color:var(--flag);color:var(--flag);background:var(--flag-soft)}
+.chip.training{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip.non-training{background:var(--flag-soft);border-color:var(--flag);color:var(--flag)}
+.chip.mixed{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.b-title{font-family:var(--display);font-size:28px;line-height:1.15}
+.b-sec{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.b-sec h3{font-size:15px;font-weight:600;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.b-sec h3 small{font-weight:400;color:var(--muted);font-size:12.5px}
+.kv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.kv div{background:var(--bg);border-radius:10px;padding:8px 10px}
+.kv span{display:block;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.kv b{font-weight:500;font-size:14px;font-variant-numeric:tabular-nums}
+.act{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.act .h{display:flex;gap:8px;align-items:flex-start}
+.act .p{color:var(--muted);font-size:13px;padding-top:2px}
+.act .t{flex:1;font-weight:500}
+.barriers{list-style:none;margin:0;padding:0;font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.barriers b{color:var(--ink);font-weight:600}
+ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+table.m{width:100%;border-collapse:collapse;font-size:14px}
+table.m th{text-align:left;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:500;padding:4px 6px;border-bottom:1px solid var(--line)}
+table.m td{padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.ins{background:var(--bg);border-radius:10px;padding:9px 11px;font-size:14px}
+.ins span{color:var(--muted);font-size:12px;margin-right:6px}
+.muted{color:var(--muted)}
+.quote{border-left:2px solid var(--flag);padding-left:12px;font-size:15px}
+
+/* start over confirm + demo */
+.confirm{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.confirm p{flex:1;min-width:220px;font-size:15px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--flag);background:var(--flag-soft);border-radius:999px;padding:4px 12px;width:fit-content}
+.brandbtn{background:none;border:none;padding:0;text-align:left;cursor:pointer}
+
+/* method map */
+.mapwrap{display:flex;flex-direction:column;gap:18px}
+.flow{position:relative;display:grid;grid-template-columns:auto repeat(5,1fr) auto;align-items:start;gap:4px;padding-top:6px}
+.flow .track{position:absolute;left:34px;right:34px;top:27px;height:2px;background:var(--line);border-radius:2px}
+.flow .fill{position:absolute;left:0;top:0;height:100%;background:var(--accent);border-radius:2px;transition:width .7s cubic-bezier(.4,.1,.2,1)}
+.end{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);text-align:center;width:68px}
+.end i{width:44px;height:44px;border-radius:12px;border:1px dashed var(--line);background:var(--bg);display:grid;place-items:center;font-style:normal;font-size:18px;color:var(--muted)}
+.node{position:relative;z-index:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 2px;text-align:center}
+.node .c{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:var(--muted);transition:all .35s}
+.node .l{font-size:12.5px;line-height:1.25;color:var(--muted);max-width:12ch}
+.node.past .c{border-color:var(--accent);color:var(--accent)}
+.node.on .c{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 6px var(--accent-soft)}
+.node.on .l{color:var(--ink);font-weight:600}
+.node.on .c::after{content:"";position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid var(--accent);animation:ring 1.8s ease-out infinite}
+@keyframes ring{from{transform:scale(1);opacity:.6}to{transform:scale(1.7);opacity:0}}
+.detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:22px;background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:20px 22px;min-height:300px}
+.detail h3{font-family:var(--display);font-size:26px;font-weight:400;line-height:1.15}
+.detail .theory{font-size:14px;color:var(--accent);font-weight:600}
+.detail .src{font-size:12.5px;color:var(--muted)}
+.detail .ask{font-family:var(--display);font-style:italic;font-size:17px;border-left:2px solid var(--accent);padding-left:12px}
+.detail dl{margin:0;display:flex;flex-direction:column;gap:10px;font-size:14.5px}
+.detail dt{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.detail dd{margin:2px 0 0}
+.viz{display:flex;flex-direction:column;justify-content:center;gap:10px;min-height:250px}
+.viz .cap{font-size:13px;color:var(--muted)}
+.enter > *{animation:rise .55s cubic-bezier(.3,.1,.2,1) both}
+.enter > *:nth-child(2){animation-delay:.08s}.enter > *:nth-child(3){animation-delay:.16s}.enter > *:nth-child(4){animation-delay:.24s}.enter > *:nth-child(5){animation-delay:.32s}.enter > *:nth-child(6){animation-delay:.4s}
+@keyframes rise{from{opacity:.35;transform:translateY(8px)}to{opacity:1;transform:none}}
+.mapctl{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+/* viz pieces */
+.gauge{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}
+.gauge .v{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;text-align:center}
+.gauge .v b{display:block;font-family:var(--display);font-size:30px;font-weight:400;font-variant-numeric:tabular-nums;line-height:1.1}
+.gauge .v span{font-size:12px;color:var(--muted)}
+.gauge .v.t{border-color:var(--accent);background:var(--accent-soft)}
+.gauge .arr{height:2px;background:var(--accent);position:relative}
+.gauge .arr::after{content:"";position:absolute;right:-1px;top:-5px;border:6px solid transparent;border-left:9px solid var(--accent)}
+.amap{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+.amap .goal{background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:12px 14px;font-size:13.5px;font-weight:600;max-width:140px}
+.amap ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.amap li{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13.5px}
+.amap li span{font-family:var(--display);color:var(--accent);font-size:17px}
+.amap li.dim{opacity:.55}
+.bem{display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px;align-items:stretch;font-size:13px}
+.bem .rh{writing-mode:horizontal-tb;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;padding-right:6px}
+.bem .cell{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 8px;position:relative;transition:all .3s}
+.bem .cell small{display:block;font-size:11px;color:var(--muted)}
+.bem .cell.scan{border-color:var(--flag);background:var(--flag-soft)}
+.bem .cell.train{border-color:var(--accent);background:var(--accent-soft)}
+.bars{display:flex;flex-direction:column;gap:12px}
+.bar2 .lbl{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:4px}
+.bar2 .lbl b{font-variant-numeric:tabular-nums;font-weight:600}
+.bar2 .tr{height:14px;border-radius:7px;background:var(--surface);border:1px solid var(--line);overflow:hidden}
+.bar2 .f{height:100%;background:var(--accent);border-radius:7px;animation:grow 1.1s cubic-bezier(.3,.1,.2,1) both}
+.bar2.miss .f{background:var(--flag)}
+@keyframes grow{from{width:8%}}
+.ladder{display:flex;flex-direction:column-reverse;gap:4px}
+.rung{display:grid;grid-template-columns:54px 1fr auto;gap:8px;align-items:center;border-radius:8px;padding:5px 10px;font-size:13px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.rung b{font-weight:500;color:var(--muted);font-size:12px}
+.rung.hi{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.rung.hi b{color:var(--accent)}
+.rung em{font-style:normal;font-size:11.5px;color:var(--accent);font-weight:600}
+@media (max-width:860px){
+  .detail{grid-template-columns:1fr}
+  .flow .l{display:none}
+}
+@media (max-width:860px){
+  .method{grid-template-columns:1fr 1fr}
+  .principles{grid-template-columns:1fr}
+  .dv{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .promises,.fields{grid-template-columns:1fr}
+  .kv{grid-template-columns:1fr 1fr}
+  .method{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="bar">
+  <button class="brand brandbtn" id="brandBtn" aria-label="Back to the start"><b>A conversation before kickoff</b><span>for Joerica Zou, Learning Experience Designer</span></button>
+  <div class="spacer"></div>
+  <button class="btn quiet small" id="speakBtn" hidden aria-pressed="false">Read questions aloud: off</button>
+  <button class="btn quiet small" id="restartBtn" hidden>Start over</button>
+  <button class="btn small" id="pauseBtn" hidden>Pause</button>
+</header>
+
+<main class="stage" id="stage"></main>
+
+<footer class="foot">
+  <a class="link" id="portfolioLink" href="/lab/" hidden>&larr; Joerica's portfolio</a>
+  <span id="saveStatus"></span>
+  <span class="spacer"></span>
+  <button class="link" id="designerBtn" hidden>Designer view</button>
+  <button class="link" id="aboutBtn">About this tool</button>
+</footer>
+
+<div class="overlay" id="aboutOverlay" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+  <div class="sheet">
+    <div class="sheet-head"><h2 id="aboutTitle">How this intake works</h2><button class="btn small" data-close>Close</button></div>
+    <p class="lede" style="font-size:16px">Before a training kickoff, the subject matter expert has a short, guided conversation with an AI interviewer. The designer gets a draft brief, and the kickoff meeting goes to decisions instead of fact-finding.</p>
+    <div class="mapwrap">
+      <div class="flow" id="flow"><div class="track"><div class="fill" id="flowFill"></div></div></div>
+      <div class="detail" id="detail" aria-live="polite"></div>
+      <div class="mapctl"><button class="btn small" id="playBtn">Pause the walkthrough</button><span>Click any step to explore it.</span></div>
+    </div>
+    <div class="principles">
+      <div><b>Experts are treated as experts</b>The interviewer asks about their cases and judgment, never about who is at fault, and checks back after each part that it heard them right.</div>
+      <div><b>Built for busy, interrupted days</b>Every answer saves. Pause anytime; on return the interviewer recaps where you were and asks the last question again.</div>
+      <div><b>AI drafts, people decide</b>The SME reviews and corrects a plain-language summary before it is sent. The designer confirms every item of the brief at kickoff.</div>
+    </div>
+    <div class="b-sec" style="border-top:none;padding-top:0"><h3>Example output <small>from a fictional SaaS customer-success request</small></h3></div>
+    <div id="exampleBrief"></div>
+  </div>
+</div>
+
+<div class="overlay" id="designerOverlay" role="dialog" aria-modal="true" aria-labelledby="designerTitle">
+  <div class="sheet">
+    <div class="sheet-head"><h2 id="designerTitle">Designer view</h2><button class="btn small" data-close>Close</button></div>
+    <div class="dv"><div class="dv-list" id="dvList"></div><div id="dvDetail"></div></div>
+  </div>
+</div>
+
+<script>
+const DESIGNER = "Joerica";
+const PARTS = [
+  {t:"What's prompting this", short:"Business goal", fw:"Action Mapping · Moore", theory:"Action Mapping", src:"Cathy Moore, Map It (2017)", why:"Starts from a measurable business result, not a list of topics.", ask:"If this training worked, which number in the business would change, and where is it today?", adds:"A measurable goal: metric, baseline, target and date.", viz:"goal"},
+  {t:"Who does the work", short:"Actions", fw:"Action Mapping · Moore", theory:"Action Mapping", src:"Cathy Moore, Map It (2017)", why:"What people need to do on the job, in observable terms, ranked by impact.", ask:"What do people need to do on the job? Which two or three actions matter most?", adds:"Observable on-the-job actions, ranked by impact.", viz:"amap"},
+  {t:"What gets in the way", short:"Barriers", fw:"Behavior Engineering Model · Gilbert", theory:"Behavior Engineering Model", src:"Thomas F. Gilbert, Human Competence (1978)", why:"Looks at information, tools and incentives before assuming a skill gap.", ask:"Is it clear what's expected? Do people have the tools and time? What happens when they do it well?", adds:"Barriers for each action, split into training and non-training fixes.", viz:"bem"},
+  {t:"How you handle it", short:"Expert decisions", fw:"Cognitive Task Analysis · Clark", theory:"Cognitive Task Analysis", src:"Clark & Feldon; Yates, Feldon & Clark (2011)", why:"Real cases and decision cues, because experts skip most of their decisions when they summarize.", ask:"Tell me about a recent case that went well. What did they notice first?", adds:"Expert decision points and common mistakes, the raw material for realistic practice.", viz:"cta"},
+  {t:"What success looks like", short:"Measures", fw:"LTEM · Thalheimer, with Kirkpatrick", theory:"LTEM, mapped to Kirkpatrick", src:"Will Thalheimer, LTEM (2018); Kirkpatrick levels 3 and 4", why:"Evidence of on-the-job change and business effect, beyond completion.", ask:"Beyond finishing a course, how would you know it's working on the job?", adds:"Measures at the transfer and business-effect tiers, with who owns the data.", viz:"ltem"}
+];
+
+const DEMO = [
+  {ai:"Thank you for making time, Dana. This helps Joerica prepare, so your kickoff can go straight to decisions. You can pause or skip anything. To start: what made you ask for training right now?<<part:1>>",
+   sme:"Honestly, our new CSMs take forever to get comfortable running onboarding calls on their own, and customers feel it. New accounts are really slow to get any value out of the product."},
+  {ai:"So the slow ramp shows up on the customer's side too. If this worked, which number would you expect to move, and roughly where is it today?<<part:1>>",
+   sme:"Time to first value. We track days from contract signed to the first completed project. It's around 45 days now, and I'd love to get it to 30 by the end of Q3."},
+  {ai:"Let me check I have it: you'd like new accounts to reach a first completed project in about 30 days instead of 45, by the end of Q3. Did I get that right, or is there anything you'd add?<<part:1>>",
+   sme:"Yes, that's it. I'm not totally sure whether 45 is the median or the average, though."},
+  {ai:"That's fine; Joerica can confirm it at kickoff. Who are the people involved, and what's the one thing on that first onboarding call that matters most for them to do well?<<part:2>>",
+   sme:"CSMs in their first 90 days, about 25 hires a year across the US and EMEA. The big one is scoping one first project with the customer instead of touring every feature."},
+  {ai:"Scoping one first project instead of the full tour. When a newer CSM ends up doing the tour, what tends to pull them that way?<<part:3>>",
+   sme:"Partly they can't tell which use cases make a good first project. But also, our call scorecard literally gives points for covering every feature."},
+  {ai:"That scorecard detail is really useful. Could you walk me through a recent call where an experienced CSM handled this well? What did she notice first?<<part:4>>",
+   sme:"Last month a customer asked about SSO in the first ten minutes. Our senior CSM read that as a sign IT wasn't involved yet, so she parked it and booked a separate technical call. A new person would have tried to fix it live and lost the whole agenda."},
+  {ai:"So an early SSO question is a signal, not a task for that call. Last part: beyond finishing a course, how would you know on real calls that this is working?<<part:5>>",
+   sme:"If more kickoff calls end with an actual scoped project written in the CRM notes. And eventually the 45 days going down. We need something before the next hiring class, in about six weeks."},
+  {ai:"Thank you, Dana, that was genuinely helpful. You've given Joerica a clear goal, the moment that matters most, and how you'd know it's working. Next you'll see a short summary to check before it goes to her.<<part:5>><<done>>", sme:null}
+];
+
+const INTERVIEW_PROMPT = `You are a pre-kickoff interviewer working with ${DESIGNER}, a Learning Experience Designer. You are talking with a subject matter expert (SME), a busy professional who asked for training and is giving you their time. They are the expert; you are here to learn from them. Your job is to gather what ${DESIGNER} needs for a focused kickoff meeting. You do not design the training, suggest a format, or promise a solution.
+
+How to treat the SME:
+- Respect their time and expertise. Be warm, calm and curious, like a thoughtful colleague. No flattery and no generic praise such as "Great answer!".
+- Acknowledge what they said in a few of their own words before each question, so they know they were heard.
+- Never assign blame to people. Ask about the work, the situation and what gets in the way, not about who is failing.
+- Many answers will be spoken through dictation: long, unpolished, with transcription errors. Read them generously and never comment on wording or typos. If something is truly unclear, ask gently.
+- If the SME says they are short on time, offer to cover only the essentials and keep going briefly.
+
+Work through five parts in order. Ask about three questions per part, never more than four.
+
+Part 1 - What's prompting this. What prompted the request? Which business number would change if it worked? Where is it now, where should it be, and by when? If they name a topic ("they need training on X"), ask what would look different in the business if it worked.
+
+Part 2 - Who does the work. Who exactly is involved (role, experience, how many, where)? What do they need to do on the job, in observable terms, rather than what they need to know? Ask the SME to name the two or three actions that matter most.
+
+Part 3 - What gets in the way. For the top actions, ask about the situation before the person: Is it clear what's expected, and do people get feedback? Do they have the tools, information and time? What happens when they do it well or badly? Then: Do they know how? Do they get enough practice? Ask one thing at a time, only what seems relevant. Do not draw conclusions.
+
+Part 4 - How you handle it. Ask for one specific recent case where someone handled it well and one where it went wrong. Explore the decisions: What did they notice first? What told them to act that way? What would someone new miss at that moment? Experts skip steps they do automatically, so when an answer jumps ahead, ask what happens just before that step.
+
+Part 5 - What success looks like. How would they know it worked on the job, and in the business, beyond course completion or satisfaction scores? What data already exists, and who owns it? Then practical limits: deadline, audience size and locations, languages, tools or LMS, and who else should be involved.
+
+Checking back: when a part feels covered, sum up what you heard in one or two sentences using their words, and ask whether you got it right or whether they'd add anything. Then move to the next part.
+
+Special messages from the SME:
+- "[The SME skipped this question.]" Say that's completely fine, in a few words, and move on.
+- "[The SME isn't sure about this one.]" Reassure them it's fine and that ${DESIGNER} can follow up at kickoff, then move on.
+- "[The SME just came back after a break.]" Welcome them back in a few words, remind them in one sentence where you were, and ask the pending question again, more briefly.
+
+Style: one question per turn. Keep each turn under 70 words. Plain language; never name frameworks or use training jargon. Never invent facts or suggest numbers for them. If they start sharing customer names, personal data or confidential figures, kindly ask for general descriptions or rough ranges instead. Reply in the language the SME writes in.
+
+Format: end every reply with a final line containing only <<part:N>>, where N is the part your question belongs to (1 to 5). When part 5 is covered and checked back, thank them sincerely for their time, tell them they'll see a short summary to check before it goes to ${DESIGNER}, and end with a final line containing only <<part:5>><<done>>.`;
+
+const BRIEF_PROMPT = `You are helping a Learning Experience Designer prepare for a kickoff meeting. Below is a pre-kickoff interview between an AI interviewer and an SME. Produce a draft kickoff brief.
+
+Rules:
+- Use only what the SME said. Do not invent numbers, names or facts. Where something was not discussed, write "Not discussed".
+- Keep each field short: a phrase or one sentence.
+- sme_summary: 4 to 7 bullet sentences that tell the SME, in plain words and in the language the SME mostly used, what we understood from them. Address them as "you". No jargon, no framework names.
+- Classify each barrier with exactly one factor: "Information", "Resources", "Incentives", "Knowledge & skills", "Capacity", "Motives". Give the evidence in the SME's words, shortened.
+- fix_type: "training" when barriers are mainly knowledge & skills, "non-training" when mainly information, resources or incentives, "mixed" when both, "unclear" when not discussed.
+- practice_ideas: 1 to 3 draft ideas for practice activities (realistic scenarios, decision drills, worked examples) for actions with a training component.
+- non_training_fixes: changes to tools, information, process or incentives the SME's answers point to. Empty array if none.
+- measures: use only these tier labels: "Tier 5 · Decision-making competence", "Tier 6 · Task competence", "Tier 7 · Transfer", "Tier 8 · Effects of transfer". Prefer measures the SME mentioned. You may propose one where none was given, ending its text with " (proposed)".
+- open_questions: what the designer must still confirm at kickoff, including anything vague, skipped or uncertain.
+- kickoff_agenda: 3 to 5 items with rough minutes, focused on the decisions still open.
+- Except for sme_summary, write in English even if the interview was in another language.
+
+Return only JSON with exactly this shape:
+{"project_title":"string","summary":"string, two sentences","sme_summary":["string"],"business_goal":{"statement":"string","metric":"string","baseline":"string","target":"string","deadline":"string","confidence":"confirmed|partial|missing"},"audience":{"who":"string","size":"string","context":"string"},"actions":[{"action":"string","priority":1,"barriers":[{"factor":"string","evidence":"string"}],"fix_type":"training|non-training|mixed|unclear"}],"non_training_fixes":["string"],"expert_insights":[{"situation":"string","decision":"string","common_mistake":"string"}],"practice_ideas":[{"for_action":"string","idea":"string"}],"measures":[{"tier":"string","measure":"string","data_source":"string"}],"constraints":["string"],"open_questions":["string"],"kickoff_agenda":["string"]}`;
+
+const EXAMPLE_BRIEF = {
+  project_title:"CSM onboarding call readiness",
+  summary:"New Customer Success Managers run long, feature-by-feature onboarding calls, and new accounts take too long to reach a first completed project. Part of the gap is skill; part is a scorecard and template that reward the wrong behavior.",
+  sme_summary:["You'd like new accounts to reach their first completed project in about 30 days instead of roughly 45.","The people involved are CSMs in their first 90 days, about 25 hires a year.","The kickoff call matters most: scoping one first project instead of touring every feature.","The current call scorecard rewards covering all features, which pulls people the other way.","When a customer asks about SSO early, experienced CSMs book a separate technical call instead of fixing it live."],
+  business_goal:{statement:"Shorten time-to-first-value for new accounts",metric:"Days from contract signature to first completed project",baseline:"About 45 days",target:"30 days",deadline:"End of Q3",confidence:"partial"},
+  audience:{who:"Customer Success Managers in their first 90 days",size:"About 25 new hires a year, US and EMEA",context:"Shadow two onboarding calls, then run three per new account alone"},
+  actions:[
+    {action:"Scope one first project on the kickoff call instead of touring every feature",priority:1,barriers:[{factor:"Knowledge & skills",evidence:"New CSMs can't tell which use cases make a good first project"},{factor:"Incentives",evidence:"Call scorecard rewards covering all features"}],fix_type:"mixed"},
+    {action:"Confirm who owns technical setup, and by when, before the call ends",priority:2,barriers:[{factor:"Information",evidence:"No checklist; the step lives in senior CSMs' heads"}],fix_type:"non-training"},
+    {action:"Spot a stalled account in week two and escalate",priority:3,barriers:[{factor:"Knowledge & skills",evidence:"Stall signals are subtle; new CSMs wait for the customer to say something"}],fix_type:"training"}
+  ],
+  non_training_fixes:["Add a technical owner and date field to the kickoff template","Change the call scorecard to reward a scoped first project"],
+  expert_insights:[
+    {situation:"Customer asks for SSO on the first call",decision:"Seniors read it as a sign IT isn't involved yet and book a separate technical call",common_mistake:"New CSMs troubleshoot live and lose the agenda"},
+    {situation:"The customer's champion changes jobs mid-onboarding",decision:"Seniors ask for an intro to the new owner within 48 hours",common_mistake:"New CSMs keep emailing the old contact"}
+  ],
+  practice_ideas:[
+    {for_action:"Scope one first project",idea:"Branching kickoff-call scenario with three customer profiles and feedback on each scoping choice"},
+    {for_action:"Spot a stalled account",idea:"Decision drill on six anonymized account timelines: escalate now, or wait?"}
+  ],
+  measures:[
+    {tier:"Tier 6 · Task competence",measure:"Rubric score on a recorded mock kickoff call (proposed)",data_source:"Enablement lead review"},
+    {tier:"Tier 7 · Transfer",measure:"Share of real kickoff calls that end with a scoped first project",data_source:"CRM call notes"},
+    {tier:"Tier 8 · Effects of transfer",measure:"Time-to-first-value for accounts onboarded by new CSMs",data_source:"Product analytics"}
+  ],
+  constraints:["Launch before the next hiring cohort, in 6 weeks","Content must live in the existing LMS","Senior CSMs can give about 2 hours in total for review"],
+  open_questions:["Is 45 days a median or an average, and who owns that report?","Can we get six anonymized stalled-account timelines?","Who approves the scorecard change?"],
+  kickoff_agenda:["Confirm the goal and metric (10 min)","Rank the three actions (15 min)","Agree on non-training fixes and owners (15 min)","Set SME review time and launch date (10 min)"]
+};
+
+const KIND_TEXT = {
+  skip:"[The SME skipped this question.]",
+  unsure:"[The SME isn't sure about this one.]",
+  resume:"[The SME just came back after a break.]"
+};
+const KIND_LABEL = {skip:"Skipped this one", unsure:"Not sure about this one", resume:"Back after a break"};
+const LS_KEY = "smeIntake.v2.current";
+
+// ---------- state ----------
+let sample = null, db = null, user = null, uid = null, owner = false, capsReady = false;
+let state = fresh();
+let busy = false, failed = false, speakOn = false, screen = "welcome";
+
+function fresh(){
+  const now = new Date().toISOString();
+  return {id: Date.now().toString(36) + Math.random().toString(36).slice(2,7), sme:{name:"", role:""}, messages:[], part:1, done:false, brief:null, smeConfirmed:false, smeNote:"", createdAt:now, updatedAt:now};
+}
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const clean = t => String(t || "").replace(/<<[^>]*>>/g, "").replace(/<<[^>]*$/, "").trim();
+const fmt = t => esc(t).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\n+/g, "<br>");
+const L = a => Array.isArray(a) ? a : [];
+const hasAnswers = s => L((s || state).messages).some(m => m.role === "user" && !m.kind);
+const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ls = {get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}}, del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
+function dictationTip(){
+  const ua = navigator.userAgent || "";
+  const touch = navigator.maxTouchPoints > 1;
+  if (/iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && touch)) return "Tap the microphone on your keyboard and just talk.";
+  if (/Android/.test(ua)) return "Tap the microphone on your keyboard and just talk.";
+  if (/Macintosh|Mac OS X/.test(ua)) return "Prefer talking? Press the Fn (globe) key twice to dictate.";
+  if (/Windows/.test(ua)) return "Prefer talking? Press Windows + H to dictate.";
+  return "Prefer talking? Use your device's dictation.";
+}
+const MIC = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>`;
+
+// ---------- screens ----------
+function show(name){
+  screen = name;
+  $("pauseBtn").hidden = name !== "talk";
+  $("restartBtn").hidden = !["talk","paused","review"].includes(name);
+  $("speakBtn").hidden = !(name === "talk" && "speechSynthesis" in window);
+  ({welcome:renderWelcome, resume:renderResume, talk:renderTalk, paused:renderPaused, review:renderReview, thanks:renderThanks})[name]();
+  window.scrollTo(0,0);
+}
+
+function renderWelcome(){
+  const keepName = $("smeName") ? $("smeName").value : "", keepRole = $("smeRole") ? $("smeRole").value : "";
+  const hint = !capsReady ? "Getting ready…" : sample ? "The first time, Claude asks your permission to run the conversation." : "The live version runs inside Claude. This sample plays the same flow with a fictional SME's scripted answers.";
+  const buttons = sample ? `<button class="btn primary" id="startBtn">Begin the conversation</button><button class="btn quiet" id="demoBtn">Watch a sample conversation</button>`
+    : capsReady ? `<button class="btn primary" id="demoBtn">Try a sample conversation</button>`
+    : `<button class="btn primary" id="startBtn" disabled>Begin the conversation</button>`;
+  $("stage").innerHTML = `
+    <div class="eyebrow">Before your training kickoff</div>
+    <h1 class="hero">Thank you for making time. ${DESIGNER} would like to learn how this work really gets done.</h1>
+    <p class="lede">You'll have a short conversation, one question at a time. Talk the way you'd explain it to a new teammate. There are no wrong answers, and you can skip anything.</p>
+    <div class="promises">
+      <div class="promise"><b>About 15 minutes</b><span>Five short parts. Stop after any of them.</span></div>
+      <div class="promise"><b>Pause anytime</b><span>Every answer is saved. Come back to this page and pick up where you left off.</span></div>
+      <div class="promise"><b>You check it first</b><span>At the end you'll see a summary and can correct anything before it's sent.</span></div>
+    </div>
+    <form id="startForm" class="fields" novalidate>
+      <div class="field"><label for="smeName">What should we call you?</label><input id="smeName" autocomplete="given-name" placeholder="First name is fine"></div>
+      <div class="field"><label for="smeRole">Your role <span class="muted">(optional)</span></label><input id="smeRole" placeholder="e.g. Director of Customer Success"></div>
+    </form>
+    <div class="row">${buttons}<span class="hint" id="startHint">${esc(hint)}</span></div>
+    <p class="care">Your answers are saved as you go so you can pause, and only the designer can see them. Please leave out customer names, personal data and confidential figures; rough ranges are plenty.</p>`;
+  $("smeName").value = keepName; $("smeRole").value = keepRole;
+  if ($("demoBtn")) $("demoBtn").onclick = startDemo;
+  if ($("startBtn")) $("startBtn").onclick = () => {
+    state = fresh();
+    state.sme = {name: $("smeName").value.trim(), role: $("smeRole").value.trim()};
+    show("talk"); ask();
+  };
+}
+
+function renderResume(){
+  const doneParts = state.done ? 5 : state.part - 1;
+  const name = state.sme.name ? `, ${esc(state.sme.name)}` : "";
+  const next = state.done ? "Your summary is ready to check." : `We'll pick up in part ${state.part}: ${esc(PARTS[state.part-1].t.toLowerCase())}.`;
+  $("stage").innerHTML = `
+    <div class="eyebrow">Welcome back</div>
+    <h1 class="hero">Good to see you again${name}.</h1>
+    <p class="lede">You've finished ${doneParts} of 5 parts. ${next} Nothing you said was lost.</p>
+    <div class="row"><button class="btn primary" id="contBtn">${state.done ? "Check my summary" : "Continue where we left off"}</button><button class="btn quiet" id="newBtn">Start a new conversation</button></div>`;
+  $("contBtn").onclick = () => {
+    if (state.done){ show("review"); return; }
+    const last = state.messages[state.messages.length-1];
+    show("talk");
+    if (last && last.role === "assistant"){ state.messages.push({role:"user", kind:"resume", content:KIND_TEXT.resume}); renderTalk(); ask(); }
+    else ask();
+  };
+  $("newBtn").onclick = () => { state.abandoned = true; save(true); goHome(); };
+}
+
+function renderPaused(){
+  $("stage").innerHTML = `
+    <div class="eyebrow">Paused</div>
+    <h1 class="hero">Take your time. Everything so far is saved.</h1>
+    <p class="lede">Come back to this same page whenever you're ready. We'll remind you where we were and pick up in part ${state.part}${state.part<=5 ? `: ${esc(PARTS[state.part-1].t.toLowerCase())}` : ""}.</p>
+    <div class="row"><button class="btn primary" id="backBtn">I'm back, let's continue</button></div>`;
+  $("backBtn").onclick = () => { state.messages.push({role:"user", kind:"resume", content:KIND_TEXT.resume}); show("talk"); ask(); };
+}
+
+function currentQuestion(){
+  for (let i = state.messages.length-1; i >= 0; i--) if (state.messages[i].role === "assistant") return {i, text: clean(state.messages[i].content)};
+  return {i:-1, text:""};
+}
+
+function renderTalk(){
+  const q = currentQuestion();
+  const lastIsUser = state.messages.length && state.messages[state.messages.length-1].role === "user";
+  const earlier = state.messages.slice(0, lastIsUser ? state.messages.length : Math.max(q.i, 0));
+  const segs = PARTS.map((p,i) => `<div class="seg ${state.done || i+1 < state.part ? "done" : i+1 === state.part ? "now" : ""}"></div>`).join("");
+  const label = state.done ? "All five parts done" : `Part ${state.part} of 5 · <b>${esc(PARTS[state.part-1].t)}</b>`;
+  const thread = earlier.length ? `<details class="thread"><summary>Our conversation so far</summary><div class="log" id="log">${earlier.map(turnHTML).join("")}</div></details>` : "";
+  $("stage").innerHTML = `
+    ${state.demo ? '<span class="badge">Sample conversation · scripted answers, no AI running</span>' : ""}
+    <div class="progress"><div class="segs" aria-hidden="true">${segs}</div><div class="label">${label}</div></div>
+    <div class="question" id="question" aria-live="polite">${busy || lastIsUser ? `<span class="thinking">Thinking about what you said…</span>` : fmt(q.text)}</div>
+    <div id="answerZone"></div>
+    ${thread}`;
+  renderAnswerZone();
+}
+
+function turnHTML(m){
+  if (m.kind) return `<div class="turn note">${esc(KIND_LABEL[m.kind])}</div>`;
+  if (m.role === "assistant") return `<div class="turn ai"><span class="who">Interviewer</span>${fmt(clean(m.content))}</div>`;
+  return `<div class="turn me"><span class="who">${esc(state.sme.name || "You")}</span>${fmt(m.content)}</div>`;
+}
+
+function renderAnswerZone(){
+  const z = $("answerZone"); if (!z) return;
+  if (failed){
+    z.innerHTML = `<div class="finish"><p class="error">That reply didn't come through. Your answer is saved.</p><button class="btn primary" id="retryBtn">Try again</button></div>`;
+    $("retryBtn").onclick = () => { failed = false; ask(); };
+    return;
+  }
+  if (state.done && !busy){
+    z.innerHTML = `<div class="finish"><p>That's everything. Next, you'll see a short summary to check before it goes to ${DESIGNER}.</p><button class="btn primary" id="toReview">See my summary</button></div>`;
+    $("toReview").onclick = () => show("review");
+    return;
+  }
+  const draft = state.demo ? (DEMO[state.demoStep] && DEMO[state.demoStep].sme) || "" : ls.get("smeIntake.v2.draft." + state.id) || "";
+  z.innerHTML = `
+    <div class="answer">
+      <label for="answer" style="position:absolute;left:-9999px">Your answer</label>
+      <textarea id="answer" rows="3" placeholder="Your answer…">${esc(draft)}</textarea>
+      <div class="tools">
+        <span class="dictate">${MIC}${esc(dictationTip())}</span>
+        <span class="spacer"></span>
+        <button class="btn quiet small" id="unsureBtn">I'm not sure</button>
+        <button class="btn quiet small" id="skipBtn">Skip</button>
+        <button class="btn primary small" id="sendBtn">Send</button>
+      </div>
+    </div>`;
+  const ta = $("answer");
+  const lock = busy || (!sample && !state.demo);
+  ["answer","unsureBtn","skipBtn","sendBtn"].forEach(id => $(id).disabled = lock);
+  ta.addEventListener("input", () => { if (!state.demo) ls.set("smeIntake.v2.draft." + state.id, ta.value); grow(ta); });
+  ta.addEventListener("keydown", e => {
+    const touch = matchMedia("(pointer: coarse)").matches;
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing && !touch){ e.preventDefault(); reply(ta.value); }
+  });
+  $("sendBtn").onclick = () => reply(ta.value);
+  $("skipBtn").onclick = () => reply("", "skip");
+  $("unsureBtn").onclick = () => reply("", "unsure");
+  grow(ta);
+  if (!lock) ta.focus({preventScroll:true});
+}
+function grow(t){ t.style.height = "auto"; t.style.height = Math.min(Math.max(t.scrollHeight, 96), 300) + "px"; }
+
+function renderReview(){
+  $("pauseBtn").hidden = true;
+  if (!state.brief && state.demo) state.brief = JSON.parse(JSON.stringify(EXAMPLE_BRIEF));
+  if (!state.brief){
+    $("stage").innerHTML = `<div class="eyebrow">Almost done</div><h1 class="hero">Putting together what we heard.</h1><div class="working"><span class="dot"></span>This takes about half a minute.</div>`;
+    makeBrief();
+    return;
+  }
+  const items = L(state.brief.sme_summary);
+  $("stage").innerHTML = `
+    <div class="eyebrow">Please check this</div>
+    <h1 class="hero">Here's what we understood. Did we get it right?</h1>
+    <div class="card">
+      <ul class="summary-list">${items.map(x => `<li>${esc(x)}</li>`).join("") || "<li>Summary not available.</li>"}</ul>
+      <div class="field"><label for="note">Anything to correct or add? <span class="muted">(optional)</span></label><textarea id="note" placeholder="Talk or type. ${esc(dictationTip())}">${esc(state.smeNote)}</textarea></div>
+      <div class="row"><button class="btn primary" id="confirmBtn">Looks right, send to ${DESIGNER}</button></div>
+    </div>`;
+  $("note").addEventListener("input", e => { state.smeNote = e.target.value; });
+  $("confirmBtn").onclick = () => { state.smeNote = $("note").value.trim(); state.smeConfirmed = true; save(); ls.del(LS_KEY); show("thanks"); };
+}
+
+function renderThanks(){
+  const name = state.sme.name ? `, ${esc(state.sme.name)}` : "";
+  $("stage").innerHTML = `
+    <div class="eyebrow">Sent</div>
+    <h1 class="hero">Thank you${name}. That was genuinely helpful.</h1>
+    <p class="lede">${DESIGNER} will read this before your kickoff, so the meeting can start from what you've already shared. You won't need to repeat any of it.</p>
+    ${state.demo ? `<div class="row"><button class="btn primary" id="seeBrief">See the brief ${DESIGNER} receives</button><button class="btn quiet" id="againBtn">Back to the start</button></div>` : ""}`;
+  if ($("seeBrief")){ $("seeBrief").onclick = () => { openAbout(); stopMap(); setTimeout(() => $("exampleBrief").scrollIntoView({behavior: reduceMotion() ? "auto" : "smooth"}), 60); }; $("againBtn").onclick = goHome; }
+}
+
+// ---------- conversation ----------
+function buildMessages(){
+  const ctx = `\n\nAbout the SME: name ${state.sme.name || "not given"}; role ${state.sme.role || "not given"}.\n\nBegin now: thank them for their time in one sentence, say in one sentence that this helps ${DESIGNER} prepare so the kickoff can focus on decisions, mention they can pause or skip anytime, then ask your first Part 1 question about what prompted the training request.`;
+  return [{role:"user", content: INTERVIEW_PROMPT + ctx}, ...state.messages.map(m => ({role:m.role, content:m.content}))];
+}
+
+async function ask(){
+  if (busy || (!sample && !state.demo)) return;
+  busy = true; failed = false;
+  renderTalk();
+  const mine = state;
+  if (state.demo){
+    await new Promise(r => setTimeout(r, reduceMotion() ? 200 : 1100));
+    if (state !== mine) return;
+    const last = state.messages[state.messages.length-1];
+    let raw;
+    if (last && last.kind === "resume"){
+      const prevFull = currentQuestion().text;
+      const qs = prevFull.match(/[^.?!]*\?/g);
+      const prev = qs ? qs.join(" ").trim() : prevFull;
+      raw = `Welcome back, Dana. We were in part ${state.part}, ${PARTS[state.part-1].t.toLowerCase()}. ${prev}<<part:${state.part}>>`;
+    } else {
+      state.demoStep = Math.min(state.demoStep + 1, DEMO.length - 1);
+      raw = DEMO[state.demoStep].ai;
+      if (last && (last.kind === "skip" || last.kind === "unsure")) raw = `No problem, ${DESIGNER} can follow up on that at kickoff. ` + raw;
+    }
+    const parts = raw.match(/<<part:(\d)>>/g);
+    if (parts){ const n = parseInt(parts[parts.length-1].replace(/\D/g,""), 10); state.part = Math.max(state.part, n); }
+    if (/<<done>>/.test(raw)) state.done = true;
+    state.messages.push({role:"assistant", content: raw});
+    busy = false; renderTalk(); speak(clean(raw));
+    return;
+  }
+  const qEl = () => $("question");
+  try {
+    const res = await sample(buildMessages(), {cache:false, onText: ({text}) => { const el = qEl(); const t = clean(text); if (el && t) el.innerHTML = fmt(t); }});
+    if (state !== mine) return;
+    const raw = res.text || "";
+    const parts = raw.match(/<<part:(\d)>>/g);
+    if (parts){ const n = parseInt(parts[parts.length-1].replace(/\D/g,""), 10); if (n >= 1 && n <= 5) state.part = Math.max(state.part, n); }
+    if (/<<done>>/.test(raw)) state.done = true;
+    state.messages.push({role:"assistant", content: raw});
+    busy = false;
+    save();
+    renderTalk();
+    speak(clean(raw));
+  } catch(e){
+    if (state !== mine) return;
+    busy = false; failed = true;
+    renderTalk();
+    if (e && e.code === "rate_limited") { const z = document.querySelector("#answerZone .error"); if (z) z.textContent = "Claude is busy for a moment. Your answer is saved; try again in a minute."; }
+    if (e && e.code === "not_granted") { const z = document.querySelector("#answerZone .error"); if (z) z.textContent = "Claude access wasn't granted on this page, so the conversation can't continue."; }
+  }
+}
+
+function reply(text, kind){
+  if (busy || failed) return;
+  const v = (text || "").trim();
+  if (!kind && !v) { $("answer").focus(); return; }
+  state.messages.push(kind ? {role:"user", kind, content: KIND_TEXT[kind]} : {role:"user", content: v});
+  ls.del("smeIntake.v2.draft." + state.id);
+  save();
+  ask();
+}
+
+function speak(text){
+  if (!speakOn || !("speechSynthesis" in window) || !text) return;
+  try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = /[一-鿿]/.test(text) ? "zh-CN" : "en-US"; speechSynthesis.speak(u); } catch(e){}
+}
+
+async function makeBrief(target){
+  const s = target || state;
+  if (!sample) return false;
+  const transcript = s.messages.map(m => m.kind ? `(${KIND_LABEL[m.kind]})` : `${m.role === "user" ? "SME" : "Interviewer"}: ${clean(m.content)}`).join("\n\n");
+  const prompt = `${BRIEF_PROMPT}\n\nSME role: ${s.sme?.role || "not given"}\n\nInterview transcript:\n${transcript}`;
+  try {
+    let v = await sample.json(prompt, {modelTier:"complex"});
+    if (typeof v === "string") v = JSON.parse(v);
+    if (!v || typeof v !== "object") throw new Error("bad");
+    s.brief = v;
+    if (target) return true;
+    save();
+    if (screen === "review") renderReview();
+    return true;
+  } catch(e){
+    if (!target && screen === "review"){
+      $("stage").innerHTML = `<div class="eyebrow">Almost done</div><h1 class="hero">The summary didn't come through.</h1><p class="lede">Your answers are all saved. Try again, or close this page and come back later.</p><div class="row"><button class="btn primary" id="again">Try again</button></div>`;
+      $("again").onclick = () => renderReview();
+    }
+    return false;
+  }
+}
+
+// ---------- saving ----------
+let chain = Promise.resolve();
+function setSave(t){ $("saveStatus").textContent = t; }
+function save(force){
+  if (state.demo) return;
+  if (!hasAnswers() && !force) return;
+  state.updatedAt = new Date().toISOString();
+  const s = JSON.parse(JSON.stringify(state));
+  ls.set(LS_KEY, JSON.stringify(s));
+  if (!db || !uid){ setSave("Saved on this device"); return; }
+  setSave("Saving…");
+  chain = chain.then(async () => {
+    await db.doc(`intakes/${uid}`).set({updatedAt: s.updatedAt});
+    await db.doc(`intakes/${uid}/sessions/${s.id}`).set(s);
+    setSave("All answers saved");
+  }).catch(e => setSave("Saved on this device only"));
+}
+const withTimeout = (p, ms) => Promise.race([p, new Promise((_, r) => setTimeout(() => r({code:"timeout"}), ms))]);
+
+async function findResumable(){
+  if (db && uid){
+    try {
+      const snap = await withTimeout(db.collection(`intakes/${uid}/sessions`).orderBy("updatedAt","desc").limit(5).get(), 8000);
+      for (const d of snap.docs){ const v = d.data(); if (v && hasAnswers(v) && !v.smeConfirmed && !v.abandoned && !v.demo) return JSON.parse(JSON.stringify(v)); }
+    } catch(e){}
+  }
+  try { const v = JSON.parse(ls.get(LS_KEY) || "null"); if (v && hasAnswers(v) && !v.smeConfirmed && !v.abandoned && !v.demo) return v; } catch(e){}
+  return null;
+}
+
+// ---------- brief rendering (designer / about) ----------
+function briefHTML(b, s){
+  const g = b.business_goal || {}, au = b.audience || {};
+  const conf = {confirmed:"Goal confirmed", partial:"Goal partly defined", missing:"Goal not yet defined"}[g.confidence] || "";
+  const list = arr => L(arr).length ? `<ul class="plain">${L(arr).map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p class="muted">Not discussed.</p>`;
+  const acts = L(b.actions).slice().sort((x,y) => (x.priority||9) - (y.priority||9)).map((a,i) => `
+    <div class="act"><div class="h"><span class="p">${esc(a.priority || i+1)}</span><span class="t">${esc(a.action)}</span><span class="chip ${esc(a.fix_type)}">${esc(a.fix_type || "unclear")}</span></div>
+    ${L(a.barriers).length ? `<ul class="barriers">${L(a.barriers).map(x => `<li><b>${esc(x.factor)}:</b> ${esc(x.evidence)}</li>`).join("")}</ul>` : ""}</div>`).join("");
+  const status = s ? `<div class="row">${s.smeConfirmed ? '<span class="chip ok">Checked by SME</span>' : '<span class="chip warn">Not yet checked by SME</span>'}${conf ? `<span class="chip">${esc(conf)}</span>` : ""}</div>` : (conf ? `<div class="row"><span class="chip">${esc(conf)}</span></div>` : "");
+  return `<div class="brief">
+    <div><div class="b-title">${esc(b.project_title)}</div><p class="muted" style="margin-top:6px">${esc(b.summary)}</p></div>
+    ${status}
+    ${s && s.smeNote ? `<div class="b-sec"><h3>SME's corrections</h3><p class="quote">${esc(s.smeNote)}</p></div>` : ""}
+    <div class="b-sec"><h3>Business goal <small>Action Mapping</small></h3><p style="font-weight:500">${esc(g.statement)}</p>
+      <div class="kv"><div><span>Metric</span><b>${esc(g.metric)}</b></div><div><span>Now</span><b>${esc(g.baseline)}</b></div><div><span>Target</span><b>${esc(g.target)}</b></div><div><span>By</span><b>${esc(g.deadline)}</b></div></div></div>
+    <div class="b-sec"><h3>Audience</h3><p>${esc(au.who)}</p><p class="muted">${esc([au.size, au.context].filter(Boolean).join(" · "))}</p></div>
+    <div class="b-sec"><h3>Key actions and barriers <small>Behavior Engineering Model</small></h3>${acts || '<p class="muted">Not discussed.</p>'}</div>
+    <div class="b-sec"><h3>Fixes outside training</h3>${list(b.non_training_fixes)}</div>
+    <div class="b-sec"><h3>Expert decisions captured <small>Cognitive Task Analysis</small></h3>${L(b.expert_insights).length ? L(b.expert_insights).map(x => `<div class="ins"><div><span>Situation</span>${esc(x.situation)}</div><div><span>Expert move</span>${esc(x.decision)}</div><div><span>Common mistake</span>${esc(x.common_mistake)}</div></div>`).join("") : '<p class="muted">Not discussed.</p>'}</div>
+    <div class="b-sec"><h3>Practice ideas <span class="chip">draft</span></h3>${L(b.practice_ideas).length ? `<ul class="plain">${L(b.practice_ideas).map(x => `<li><b>${esc(x.for_action)}:</b> ${esc(x.idea)}</li>`).join("")}</ul>` : '<p class="muted">None yet.</p>'}</div>
+    <div class="b-sec"><h3>How we'll know it worked <small>LTEM</small></h3>${L(b.measures).length ? `<table class="m"><thead><tr><th>Tier</th><th>Measure</th><th>Source</th></tr></thead><tbody>${L(b.measures).map(x => `<tr><td>${esc(x.tier)}</td><td>${esc(x.measure)}</td><td>${esc(x.data_source)}</td></tr>`).join("")}</tbody></table>` : '<p class="muted">Not discussed.</p>'}</div>
+    <div class="b-sec"><h3>Constraints</h3>${list(b.constraints)}</div>
+    <div class="b-sec"><h3>Open questions for kickoff</h3>${list(b.open_questions)}</div>
+    <div class="b-sec"><h3>Suggested kickoff agenda</h3>${list(b.kickoff_agenda)}</div>
+    <div class="b-sec"><h3>What the SME saw</h3>${list(b.sme_summary)}</div>
+  </div>`;
+}
+
+function briefMarkdown(b, s){
+  const g = b.business_goal || {}, au = b.audience || {};
+  const o = [`# Kickoff brief: ${b.project_title}`, "", b.summary, ""];
+  if (s) o.push(`Status: ${s.smeConfirmed ? "checked by SME" : "not yet checked by SME"}`, "");
+  if (s && s.smeNote) o.push("## SME's corrections", s.smeNote, "");
+  o.push("## Business goal", g.statement, `- Metric: ${g.metric}`, `- Now: ${g.baseline}`, `- Target: ${g.target}`, `- By: ${g.deadline}`, "", "## Audience", `${au.who} (${au.size}). ${au.context}`, "", "## Key actions and barriers");
+  L(b.actions).forEach(a => { o.push(`${a.priority}. ${a.action} [${a.fix_type}]`); L(a.barriers).forEach(x => o.push(`   - ${x.factor}: ${x.evidence}`)); });
+  o.push("", "## Fixes outside training", ...L(b.non_training_fixes).map(x => `- ${x}`));
+  o.push("", "## Expert decisions captured", ...L(b.expert_insights).map(x => `- ${x.situation}: ${x.decision} (common mistake: ${x.common_mistake})`));
+  o.push("", "## Practice ideas (draft)", ...L(b.practice_ideas).map(x => `- ${x.for_action}: ${x.idea}`));
+  o.push("", "## How we'll know it worked", ...L(b.measures).map(x => `- ${x.tier}: ${x.measure} (source: ${x.data_source})`));
+  o.push("", "## Constraints", ...L(b.constraints).map(x => `- ${x}`));
+  o.push("", "## Open questions for kickoff", ...L(b.open_questions).map(x => `- ${x}`));
+  o.push("", "## Suggested kickoff agenda", ...L(b.kickoff_agenda).map(x => `- ${x}`));
+  return o.join("\n");
+}
+
+// ---------- method map ----------
+let mapIdx = 0, mapTimer = null, mapPlaying = false, bemTimer = null;
+const LTEM = ["Attendance","Activity","Learner perceptions","Knowledge","Decision-making competence","Task competence","Transfer","Effects of transfer"];
+function vizHTML(k){
+  if (k === "goal") return `<div class="viz enter"><div class="gauge"><div class="v"><b>45</b><span>days today</span></div><div class="arr"></div><div class="v t"><b>30</b><span>days by end of Q3</span></div></div><p class="cap">The request becomes a number the business already tracks: here, days from contract to a customer's first completed project.</p><p class="cap">Figures from the sample conversation.</p></div>`;
+  if (k === "amap") return `<div class="viz enter"><div class="amap"><div class="goal">Goal: first value in 30 days</div><ol><li><span>1</span>Scope one first project on the kickoff call</li><li><span>2</span>Confirm who owns technical setup, and by when</li><li class="dim"><span>3</span>Spot a stalled account in week two</li></ol></div><p class="cap">Training is built around what people do, ranked by impact. Information is added only when a practice activity needs it.</p></div>`;
+  if (k === "bem"){
+    const cell = (t, n, key) => `<div class="cell" data-k="${key}">${t}<small>${n}</small></div>`;
+    return `<div class="viz enter"><div class="bem"><div class="rh">Environment</div>${cell("Information","expectations, feedback","in")}${cell("Resources","tools, time","re")}${cell("Incentives","consequences","ic")}<div class="rh">Person</div>${cell("Knowledge &amp; skills","know-how","ks")}${cell("Capacity","fit for the task","ca")}${cell("Motives","wants to","mo")}</div><p class="cap">The interviewer checks the environment first. Only the green box is fixed by training; the others call for changes to tools, process or incentives.</p></div>`;
+  }
+  if (k === "cta") return `<div class="viz enter"><div class="bars"><div class="bar2"><div class="lbl"><span>Decisions an expert actually makes</span><b>100%</b></div><div class="tr"><div class="f" style="width:100%"></div></div></div><div class="bar2 miss"><div class="lbl"><span>What they mention when asked to describe the task</span><b>~30%</b></div><div class="tr"><div class="f" style="width:30%"></div></div></div><div class="bar2"><div class="lbl"><span>Captured with case-based probing</span><b>70–80%</b></div><div class="tr"><div class="f" style="width:75%"></div></div></div></div><p class="cap">Experts omit about 70% of their decisions when they summarize a complex task. Asking for specific cases and probing each decision recovers most of them.</p></div>`;
+  if (k === "ltem") return `<div class="viz enter"><div class="ladder">${LTEM.map((t,i) => `<div class="rung ${i >= 4 ? "hi" : ""}"><b>Tier ${i+1}</b><span>${t}</span>${i === 6 ? "<em>≈ Kirkpatrick L3</em>" : i === 7 ? "<em>≈ Kirkpatrick L4</em>" : "<span></span>"}</div>`).join("")}</div><p class="cap">Most course evaluations stop at tier 4. The brief asks for evidence at tiers 5 to 8.</p></div>`;
+  return "";
+}
+function buildFlow(){
+  const f = $("flow");
+  f.querySelectorAll(".node,.end").forEach(n => n.remove());
+  f.insertAdjacentHTML("beforeend", `<div class="end"><i>?</i>SME request</div>` + PARTS.map((p,i) => `<button class="node" data-i="${i}" aria-label="Part ${i+1}: ${esc(p.short)}"><span class="c">${i+1}</span><span class="l">${esc(p.short)}</span></button>`).join("") + `<div class="end"><i>✓</i>Kickoff brief</div>`);
+  f.querySelectorAll(".node").forEach(b => b.onclick = () => { stopMap(); setMap(+b.dataset.i); });
+}
+function setMap(i){
+  mapIdx = i; const p = PARTS[i];
+  document.querySelectorAll("#flow .node").forEach((n,k) => { n.classList.toggle("on", k === i); n.classList.toggle("past", k < i); n.setAttribute("aria-pressed", String(k === i)); });
+  $("flowFill").style.width = ((i + 1) / 6 * 100) + "%";
+  $("detail").innerHTML = `<div class="enter" style="display:flex;flex-direction:column;gap:12px"><span class="theory">Part ${i+1} · ${esc(p.theory)}</span><h3>${esc(p.t)}</h3><p class="ask">“${esc(p.ask)}”</p><dl><div><dt>Why this framework</dt><dd>${esc(p.why)}</dd></div><div><dt>What it adds to the brief</dt><dd>${esc(p.adds)}</dd></div></dl><span class="src">${esc(p.src)}</span></div>${vizHTML(p.viz)}`;
+  clearInterval(bemTimer);
+  if (p.viz === "bem") runBem();
+}
+function runBem(){
+  const cells = [...document.querySelectorAll(".bem .cell")];
+  const finish = () => { cells.forEach(c => c.classList.remove("scan")); const t = document.querySelector('.bem .cell[data-k="ks"]'); if (t) t.classList.add("train"); };
+  if (reduceMotion()){ finish(); return; }
+  let k = 0;
+  bemTimer = setInterval(() => { cells.forEach(c => c.classList.remove("scan")); if (k < cells.length){ cells[k].classList.add("scan"); k++; } else { clearInterval(bemTimer); finish(); } }, 520);
+}
+function updPlay(){ $("playBtn").textContent = mapPlaying ? "Pause the walkthrough" : "Play the walkthrough"; }
+function startMap(){ clearInterval(mapTimer); mapPlaying = true; updPlay(); mapTimer = setInterval(() => setMap((mapIdx + 1) % PARTS.length), 7000); }
+function stopMap(){ clearInterval(mapTimer); clearInterval(bemTimer); mapPlaying = false; if ($("playBtn")) updPlay(); }
+function openAbout(){
+  buildFlow(); setMap(0);
+  $("exampleBrief").innerHTML = briefHTML(EXAMPLE_BRIEF);
+  $("aboutOverlay").classList.add("open");
+  if (reduceMotion()) stopMap(); else startMap();
+}
+
+// ---------- demo & start over ----------
+function startDemo(){
+  state = fresh();
+  state.demo = true; state.demoStep = 0;
+  state.sme = {name:"Dana", role:"Director of Customer Success"};
+  state.messages = [{role:"assistant", content: DEMO[0].ai}];
+  setSave("");
+  show("talk");
+}
+function goHome(){
+  try { speechSynthesis.cancel(); } catch(e){}
+  if (!state.demo) ls.del(LS_KEY);
+  state = fresh(); busy = false; failed = false; setSave("");
+  show("welcome");
+}
+function confirmRestart(){
+  if (screen === "welcome") return;
+  if (screen === "thanks" || (!state.demo && !hasAnswers())){ goHome(); return; }
+  if ($("confirmBar")) return;
+  $("stage").insertAdjacentHTML("afterbegin", `<div class="confirm" id="confirmBar"><p>${state.demo ? "Leave the sample conversation and go back to the start?" : "Start over? This conversation will be set aside and won't be resumed."}</p><button class="btn small primary" id="yesRestart">Start over</button><button class="btn small quiet" id="noRestart">Keep going</button></div>`);
+  $("yesRestart").onclick = () => { if (!state.demo && hasAnswers()){ state.abandoned = true; save(true); } goHome(); };
+  $("noRestart").onclick = () => $("confirmBar").remove();
+  $("noRestart").focus();
+}
+
+async function openDesigner(){
+  $("designerOverlay").classList.add("open");
+  const list = $("dvList"), detail = $("dvDetail");
+  list.innerHTML = `<div class="working"><span class="dot"></span>Loading…</div>`; detail.innerHTML = "";
+  try {
+    const ids = (await withTimeout(db.collection("intakes").get(), 10000)).docs.map(d => d.id);
+    const items = [];
+    for (const id of ids){
+      const snap = await withTimeout(db.collection(`intakes/${id}/sessions`).orderBy("updatedAt","desc").limit(50).get(), 10000);
+      snap.docs.forEach(d => { const v = d.data(); if (v) items.push({ref:`intakes/${id}/sessions/${d.id}`, v: JSON.parse(JSON.stringify(v))}); });
+    }
+    items.sort((a,b) => String(b.v.updatedAt).localeCompare(String(a.v.updatedAt)));
+    if (!items.length){ list.innerHTML = `<p class="muted">No conversations yet.</p>`; return; }
+    const status = v => v.smeConfirmed ? "Checked by SME" : v.done ? "Waiting for SME check" : `In progress, part ${v.part}`;
+    list.innerHTML = items.map((it,i) => `<button class="dv-item" data-i="${i}"><b>${esc(it.v.sme?.name || "Unnamed")}${it.v.sme?.role ? ", " + esc(it.v.sme.role) : ""}</b><span>${esc(new Date(it.v.updatedAt).toLocaleString())} · ${esc(status(it.v))}</span></button>`).join("");
+    const pick = i => {
+      list.querySelectorAll(".dv-item").forEach(b => b.classList.toggle("sel", +b.dataset.i === i));
+      const it = items[i], v = it.v;
+      const transcript = L(v.messages).map(m => m.kind ? `<div class="turn note">${esc(KIND_LABEL[m.kind])}</div>` : m.role === "assistant" ? `<div class="turn ai"><span class="who">Interviewer</span>${fmt(clean(m.content))}</div>` : `<div class="turn me"><span class="who">SME</span>${fmt(m.content)}</div>`).join("");
+      detail.innerHTML = `
+        <div class="row" style="margin-bottom:14px">${v.brief ? '<button class="btn small" id="copyMd">Copy brief as Markdown</button>' : ""}<button class="btn small" id="regen" ${sample && L(v.messages).length > 4 ? "" : "disabled"}>${v.brief ? "Redraft brief" : "Draft brief now"}</button></div>
+        <div id="dvBrief">${v.brief ? briefHTML(v.brief, v) : '<p class="muted">No brief yet. The conversation is still in progress.</p>'}</div>
+        <details class="thread" style="margin-top:18px"><summary>Full conversation</summary><div class="log">${transcript}</div></details>`;
+      if ($("copyMd")) $("copyMd").onclick = async e => { try { await navigator.clipboard.writeText(briefMarkdown(v.brief, v)); e.target.textContent = "Copied"; } catch(err){ e.target.textContent = "Copy was blocked"; } };
+      $("regen").onclick = async e => {
+        e.target.disabled = true; e.target.textContent = "Drafting…";
+        const ok = await makeBrief(v);
+        if (ok && v.brief){ try { await db.doc(it.ref).update({brief: v.brief}); } catch(err){} }
+        pick(i);
+      };
+    };
+    list.querySelectorAll(".dv-item").forEach(b => b.onclick = () => pick(+b.dataset.i));
+    pick(0);
+  } catch(e){
+    list.innerHTML = `<p class="muted">Saved conversations can't be reached right now. Try again in a moment.</p>`;
+  }
+}
+
+// ---------- wiring ----------
+$("pauseBtn").onclick = () => { if (busy) return; save(); show("paused"); };
+$("speakBtn").onclick = () => {
+  speakOn = !speakOn;
+  $("speakBtn").textContent = `Read questions aloud: ${speakOn ? "on" : "off"}`;
+  $("speakBtn").setAttribute("aria-pressed", String(speakOn));
+  if (speakOn) speak(currentQuestion().text); else { try { speechSynthesis.cancel(); } catch(e){} }
+};
+$("aboutBtn").onclick = openAbout;
+$("restartBtn").onclick = confirmRestart;
+$("brandBtn").onclick = confirmRestart;
+$("playBtn").onclick = () => { if (mapPlaying) stopMap(); else { setMap((mapIdx + 1) % PARTS.length); startMap(); } };
+if (/github\.io$/.test(location.hostname)) $("portfolioLink").hidden = false;
+function closeOverlay(o){ o.classList.remove("open"); if (o.id === "aboutOverlay") stopMap(); }
+$("designerBtn").onclick = openDesigner;
+document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => closeOverlay(b.closest(".overlay")));
+document.querySelectorAll(".overlay").forEach(o => o.addEventListener("click", e => { if (e.target === o) closeOverlay(o); }));
+document.addEventListener("keydown", e => { if (e.key === "Escape") document.querySelectorAll(".overlay.open").forEach(closeOverlay); });
+
+show("welcome");
+
+(async () => {
+  const use = n => (window.claude && typeof window.claude.use === "function") ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+  const [s, d, u] = await Promise.all([use("sample"), use("db"), use("user")]);
+  sample = s; db = d; user = u; capsReady = true;
+  try { if (user){ uid = await user.id(); owner = !!(await user.isOwner()); } } catch(e){ uid = null; }
+  if (owner && db) $("designerBtn").hidden = false;
+  const r = await findResumable();
+  const untouched = screen === "welcome" && !($("smeName") && ($("smeName").value || $("smeRole").value));
+  if (r && untouched){ state = Object.assign(fresh(), r); show("resume"); return; }
+  if (screen === "welcome") renderWelcome();
+})();
+</script>
+</body>
+</html>
